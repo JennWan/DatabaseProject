@@ -1,9 +1,0 @@
-this document contains the scripts we need to run each time we start the program
-
-ssh tunneling:
-mac sh ./project_main/scripts/mac/db-tunnel.sh
-windows .\project_main\scripts\win\db-tunnel.cmd
-
-starting:
-mac sh ./project_main/local-start.sh
-windows .\project_main\local-start.cmd
