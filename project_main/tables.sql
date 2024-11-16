@@ -164,17 +164,17 @@ CREATE TABLE Joins (
 
 INSERT
 INTO Account1(phoneNumber, name)
-VALUES (‘1234567890’, ‘A’)
+VALUES ('1234567890', 'A')
 INSERT
 INTO Account1(phoneNumber, name)
-VALUES (‘2345678901’, ‘B’)
+VALUES ('2345678901', 'B')
 INSERT
 INTO Account1(phoneNumber, name)
-VALUES (‘3456789012’, ‘C’)
+VALUES ('3456789012', 'C')
 INSERT
 INTO Account1(phoneNumber, name)
-VALUES (‘4567890123’, ‘D’)
+VALUES ('4567890123', 'D')
 INSERT
 INTO Account1(phoneNumber, name)
-VALUES (‘5678901234’, ‘E’)
+VALUES ('5678901234', 'E')
 
