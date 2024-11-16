@@ -19,7 +19,7 @@ DROP TABLE Joins;
 
 CREATE TABLE Account1 (
                           phoneNumber INTEGER  PRIMARY KEY,
-                          name VARCHAR
+                          name VARCHAR(80)
 );
 
 CREATE TABLE Account2 (
@@ -29,14 +29,14 @@ CREATE TABLE Account2 (
 
 CREATE TABLE Journal1 (
                           journalID INTEGER  PRIMARY KEY,
-                          title VARCHAR,
+                          title VARCHAR(80),
                           accountID INTEGER NOT NULL,
                           FOREIGN KEY (accountID) REFERENCES Account2(accountID)
 );
 
 CREATE TABLE Journal2 (
-                          title VARCHAR  PRIMARY KEY,
-                          description VARCHAR
+                          title VARCHAR(80)  PRIMARY KEY,
+                          description VARCHAR(8000)
 );
 
 CREATE TABLE Friends (
@@ -48,17 +48,17 @@ CREATE TABLE Friends (
 );
 
 CREATE TABLE Review1 (
-                         comments VARCHAR,
+                         comments VARCHAR(8000),
                          reviewID INTEGER  PRIMARY KEY,
                          journalID INTEGER,
-                         restaurantName VARCHAR  NOT NULL,
-                         restaurantLocation VARCHAR NOT NULL,
+                         restaurantName VARCHAR(40)  NOT NULL,
+                         restaurantLocation VARCHAR(40) NOT NULL,
                          FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
                          FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
 );
 
 CREATE TABLE Review2 (
-                         tags VARCHAR,
+                         tags VARCHAR(40),
                          journalID INTEGER PRIMARY KEY,
                          accountID INTEGER  NOT NULL,
                          FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
@@ -70,16 +70,16 @@ CREATE TABLE Rates (
                        serviceRating INTEGER,
                        affordabilityRating INTEGER,
                        reviewID INTEGER NOT NULL,
-                       restaurantName VARCHAR NOT NULL,
-                       restaurantLocation VARCHAR NOT NULL,
+                       restaurantName VARCHAR(40) NOT NULL,
+                       restaurantLocation VARCHAR(40) NOT NULL,
                        PRIMARY KEY (reviewID, restaurantName, restaurantLocation),
                        FOREIGN KEY (reviewID) REFERENCES Review1(reviewID),
                        FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
 );
 
 CREATE TABLE Media (
-                       filename VARCHAR  PRIMARY KEY,
-                       description VARCHAR,
+                       filename VARCHAR(40)  PRIMARY KEY,
+                       description VARCHAR(8000),
                        journalID INTEGER  NOT NULL,
                        FOREIGN KEY (journalID) REFERENCES Journal1(journalID)
 );
@@ -89,8 +89,8 @@ CREATE TABLE DineInOrder (
                              totalPrice INTEGER,
                              tableNumber INTEGER,
                              accountID INTEGER NOT NULL,
-                             restaurantName VARCHAR  NOT NULL,
-                             restaurantLocation VARCHAR NOT NULL,
+                             restaurantName VARCHAR(40)  NOT NULL,
+                             restaurantLocation VARCHAR(40) NOT NULL,
                              FOREIGN KEY (accountID) REFERENCES Account2(accountID),
                              FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
 );
@@ -100,30 +100,30 @@ CREATE TABLE PickupOrder (
                              totalPrice INTEGER,
                              pickupNumber INTEGER,
                              accountID INTEGER  NOT NULL,
-                             restaurantName VARCHAR  NOT NULL,
-                             restaurantLocation VARCHAR NOT NULL,
+                             restaurantName VARCHAR(40) NOT NULL,
+                             restaurantLocation VARCHAR(40) NOT NULL,
                              FOREIGN KEY (accountID) REFERENCES Account2(accountID),
                              FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
 );
 
 CREATE TABLE Restaurant1 (
-                             cuisineTag VARCHAR,
-                             menu VARCHAR  PRIMARY KEY,
+                             cuisineTag VARCHAR(40),
+                             menu VARCHAR(40) PRIMARY KEY
 );
 
 CREATE TABLE Restaurant2 (
-                             name VARCHAR,
-                             location VARCHAR,
+                             name VARCHAR(40),
+                             location VARCHAR(40),
                              waitlistID INTEGER UNIQUE,
                              PRIMARY KEY (name, location),
                              FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID)
 );
 
 CREATE TABLE Restaurant_Staff1 (
-                                   restaurantName VARCHAR,
-                                   restaurantLocation VARCHAR,
+                                   restaurantName VARCHAR(40),
+                                   restaurantLocation VARCHAR(40),
                                    staffID INTEGER,
-                                   position VARCHAR,
+                                   position VARCHAR(40),
                                    PRIMARY KEY (restaurantName, restaurantLocation, staffID),
                                    FOREIGN KEY (restaurantName, restaurantLocation)
                                        REFERENCES Restaurant2(name, location)
@@ -133,13 +133,13 @@ CREATE TABLE Restaurant_Staff1 (
 
 CREATE TABLE Restaurant_Staff2 (
                                    staffID INTEGER PRIMARY KEY,
-                                   name VARCHAR
+                                   name VARCHAR(80)
 );
 
 CREATE TABLE Waitlist1 (
                            waitlistID INTEGER  PRIMARY KEY,
-                           restaurantName VARCHAR NOT NULL,
-                           restaurantLocation VARCHAR NOT NULL,
+                           restaurantName VARCHAR(40) NOT NULL,
+                           restaurantLocation VARCHAR(40) NOT NULL,
                            UNIQUE (restaurantName),
                            UNIQUE (restaurantLocation),
                            FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
@@ -147,8 +147,8 @@ CREATE TABLE Waitlist1 (
 
 CREATE TABLE Waitlist2 (
                            estimateWaitTime INTEGER,
-                           restaurantName VARCHAR NOT NULL,
-                           restaurantLocation VARCHAR NOT NULL,
+                           restaurantName VARCHAR(40) NOT NULL,
+                           restaurantLocation VARCHAR(40) NOT NULL,
                            PRIMARY KEY (restaurantName, restaurantLocation),
                            UNIQUE (restaurantName),
                            UNIQUE (restaurantLocation),
