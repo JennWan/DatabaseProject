@@ -1,22 +1,3 @@
-DROP TABLE Account1;
-DROP TABLE Account2;
-DROP TABLE Journal1;
-DROP TABLE Journal2;
-DROP TABLE Friends;
-DROP TABLE Review1;
-DROP TABLE Review2;
-DROP TABLE Rates;
-DROP TABLE Media;
-DROP TABLE DineInOrder;
-DROP TABLE PickupOrder;
-DROP TABLE Restaurant1;
-DROP TABLE Restaurant2;
-DROP TABLE Restaurant_Staff1;
-DROP TABLE Restaurant_Staff2;
-DROP TABLE Waitlist1;
-DROP TABLE Waitlist2;
-DROP TABLE Joins;
-
 CREATE TABLE Account1 (
           phoneNumber INTEGER  PRIMARY KEY,
           name VARCHAR(80)
