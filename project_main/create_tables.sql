@@ -218,10 +218,10 @@ INTO Friends(accountID, friendID)
 VALUES('0003', '0004');
 INSERT
 INTO Friends(accountID, friendID)
-VALUES('0005', '0006');
+VALUES('0005', '0001');
 INSERT
 INTO Friends(accountID, friendID)
-VALUES('0006', '0001');
+VALUES('0003', '0001');
 INSERT
 INTO Friends(accountID, friendID)
 VALUES('0003', '0005');
