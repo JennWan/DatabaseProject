@@ -31,8 +31,7 @@ CREATE TABLE Friends (
 CREATE TABLE Media (
        filename VARCHAR(40)  PRIMARY KEY,
        description VARCHAR(4000),
-       journalID INTEGER  NOT NULL,
-       FOREIGN KEY (journalID) REFERENCES Journal1(journalID)
+       journalID INTEGER  NOT NULL
 );
 
 CREATE TABLE Restaurant1 (
@@ -52,10 +51,7 @@ CREATE TABLE Restaurant_Staff1 (
        restaurantLocation VARCHAR(40),
        staffID INTEGER,
        position VARCHAR(40),
-       PRIMARY KEY (restaurantName, restaurantLocation, staffID),
-       FOREIGN KEY (restaurantName, restaurantLocation)
-           REFERENCES Restaurant2(name, location)
-               ON DELETE CASCADE
+       PRIMARY KEY (restaurantName, restaurantLocation, staffID)
 );
 
 
@@ -65,21 +61,19 @@ CREATE TABLE Restaurant_Staff2 (
 );
 
 CREATE TABLE Review1 (
-                         comments VARCHAR(4000),
-                         reviewID INTEGER  PRIMARY KEY,
-                         journalID INTEGER,
-                         restaurantName VARCHAR(40)  NOT NULL,
-                         restaurantLocation VARCHAR(40) NOT NULL,
-                         FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
-                         FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
+     comments VARCHAR(4000),
+     reviewID INTEGER  PRIMARY KEY,
+     journalID INTEGER,
+     restaurantName VARCHAR(40)  NOT NULL,
+     restaurantLocation VARCHAR(40) NOT NULL
 );
 
 CREATE TABLE Review2 (
-                         tags VARCHAR(40),
-                         journalID INTEGER PRIMARY KEY,
-                         accountID INTEGER  NOT NULL,
-                         FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
-                         FOREIGN KEY (accountID) REFERENCES Account2(accountID)
+     tags VARCHAR(40),
+     journalID INTEGER PRIMARY KEY,
+     accountID INTEGER  NOT NULL,
+     FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
+     FOREIGN KEY (accountID) REFERENCES Account2(accountID)
 );
 
 CREATE TABLE Waitlist1 (
@@ -111,40 +105,38 @@ CREATE TABLE Joins (
 );
 
 CREATE TABLE Rates (
-                       foodRating INTEGER,
-                       serviceRating INTEGER,
-                       affordabilityRating INTEGER,
-                       reviewID INTEGER NOT NULL,
-                       restaurantName VARCHAR(40) NOT NULL,
-                       restaurantLocation VARCHAR(40) NOT NULL,
-                       PRIMARY KEY (reviewID, restaurantName, restaurantLocation),
-                       FOREIGN KEY (reviewID) REFERENCES Review1(reviewID),
-                       FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
+           foodRating INTEGER,
+           serviceRating INTEGER,
+           affordabilityRating INTEGER,
+           reviewID INTEGER NOT NULL,
+           restaurantName VARCHAR(40) NOT NULL,
+           restaurantLocation VARCHAR(40) NOT NULL,
+           PRIMARY KEY (reviewID, restaurantName, restaurantLocation),
+           FOREIGN KEY (reviewID) REFERENCES Review1(reviewID),
+           FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
 );
 
 CREATE TABLE DineInOrder (
-                             orderID INTEGER  PRIMARY KEY,
-                             totalPrice INTEGER,
-                             tableNumber INTEGER,
-                             accountID INTEGER NOT NULL,
-                             restaurantName VARCHAR(40)  NOT NULL,
-                             restaurantLocation VARCHAR(40) NOT NULL,
-                             FOREIGN KEY (accountID) REFERENCES Account2(accountID),
-                             FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
+                 orderID INTEGER  PRIMARY KEY,
+                 totalPrice INTEGER,
+                 tableNumber INTEGER,
+                 accountID INTEGER NOT NULL,
+                 restaurantName VARCHAR(40)  NOT NULL,
+                 restaurantLocation VARCHAR(40) NOT NULL,
+                 FOREIGN KEY (accountID) REFERENCES Account2(accountID),
+                 FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
 );
 
 CREATE TABLE PickupOrder (
-                             orderID INTEGER  PRIMARY KEY,
-                             totalPrice INTEGER,
-                             pickupNumber INTEGER,
-                             accountID INTEGER  NOT NULL,
-                             restaurantName VARCHAR(40) NOT NULL,
-                             restaurantLocation VARCHAR(40) NOT NULL,
-                             FOREIGN KEY (accountID) REFERENCES Account2(accountID),
-                             FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
+                 orderID INTEGER  PRIMARY KEY,
+                 totalPrice INTEGER,
+                 pickupNumber INTEGER,
+                 accountID INTEGER  NOT NULL,
+                 restaurantName VARCHAR(40) NOT NULL,
+                 restaurantLocation VARCHAR(40) NOT NULL,
+                 FOREIGN KEY (accountID) REFERENCES Account2(accountID),
+                 FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
 );
-
-ALTER TABLE Restaurant2 ADD FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID);
 
 INSERT
 INTO Account1(phoneNumber, name)
@@ -323,6 +315,38 @@ INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, r
 VALUES ('90010', '110', '7014', '0005', 'test5s Food', 'test5s location');
 
 INSERT
+INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
+VALUES ('1', 'test1s name', 'test1s location');
+INSERT
+INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
+VALUES ('2', 'test2s name', 'test2s location');
+INSERT
+INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
+VALUES ('3', 'test3s name', 'test3s location');
+INSERT
+INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
+VALUES ('4', 'test4s name', 'test4s location');
+INSERT
+INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
+VALUES ('5', 'test5s name', 'test5s location');
+
+INSERT
+INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
+VALUES ('20', 'test1s name', 'test1s location');
+INSERT
+INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
+VALUES ('70', 'test2s name', 'test2s location');
+INSERT
+INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
+VALUES ('10', 'test3s name', 'test3s location');
+INSERT
+INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
+VALUES ('0', 'test4s name', 'test4s location');
+INSERT
+INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
+VALUES ('15', 'test5s name', 'test5s location');
+
+INSERT
 INTO Restaurant1(cuisineTag, menu)
 VALUES ('American', 'Burgers, Fries, Milkshakes');
 INSERT
@@ -387,38 +411,6 @@ INTO Restaurant_Staff2(staffID, name)
 VALUES('05', 'staff5');
 
 INSERT
-INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
-VALUES ('1', 'test1s name', 'test1s location');
-INSERT
-INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
-VALUES ('2', 'test2s name', 'test2s location');
-INSERT
-INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
-VALUES ('3', 'test3s name', 'test3s location');
-INSERT
-INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
-VALUES ('4', 'test4s name', 'test4s location');
-INSERT
-INTO Waitlist1(waitlistID, restaurantName, restaurantLocation)
-VALUES ('5', 'test5s name', 'test5s location');
-
-INSERT
-INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
-VALUES ('20', 'test1s name', 'test1s location');
-INSERT
-INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
-VALUES ('70', 'test2s name', 'test2s location');
-INSERT
-INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
-VALUES ('10', 'test3s name', 'test3s location');
-INSERT
-INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
-VALUES ('0', 'test4s name', 'test4s location');
-INSERT
-INTO Waitlist2(estimateWaitTime, restaurantName, restaurantLocation)
-VALUES ('15', 'test5s name', 'test5s location');
-
-INSERT
 INTO Joins(position, accountID, waitlistID)
 VALUES ('1', '0001', '1');
 INSERT
@@ -433,3 +425,14 @@ VALUES ('1', '0004', '3');
 INSERT
 INTO Joins(position, accountID, waitlistID)
 VALUES ('2', '0005', '3');
+
+
+ALTER TABLE Media ADD FOREIGN KEY (journalID) REFERENCES Journal1(journalID);
+
+ALTER TABLE Restaurant_Staff1 ADD FOREIGN KEY (restaurantName, restaurantLocation)
+    REFERENCES Restaurant2(name, location) ON DELETE CASCADE;
+
+ALTER TABLE Review1 ADD FOREIGN KEY (journalID) REFERENCES Journal1(journalID);
+ALTER TABLE Review1 ADD FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location);
+
+ALTER TABLE Restaurant2 ADD FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID);
