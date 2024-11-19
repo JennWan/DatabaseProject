@@ -17,7 +17,7 @@ CREATE TABLE Journal1 (
 
 CREATE TABLE Journal2 (
           title VARCHAR(80)  PRIMARY KEY,
-          description VARCHAR(8000)
+          description VARCHAR(4000)
 );
 
 CREATE TABLE Friends (
@@ -28,63 +28,11 @@ CREATE TABLE Friends (
          FOREIGN KEY (friendID) REFERENCES Account2(accountID)
 );
 
-CREATE TABLE Review1 (
-         comments VARCHAR(8000),
-         reviewID INTEGER  PRIMARY KEY,
-         journalID INTEGER,
-         restaurantName VARCHAR(40)  NOT NULL,
-         restaurantLocation VARCHAR(40) NOT NULL,
-         FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
-         FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
-);
-
-CREATE TABLE Review2 (
-         tags VARCHAR(40),
-         journalID INTEGER PRIMARY KEY,
-         accountID INTEGER  NOT NULL,
-         FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
-         FOREIGN KEY (accountID) REFERENCES Account2(accountID)
-);
-
-CREATE TABLE Rates (
-       foodRating INTEGER,
-       serviceRating INTEGER,
-       affordabilityRating INTEGER,
-       reviewID INTEGER NOT NULL,
-       restaurantName VARCHAR(40) NOT NULL,
-       restaurantLocation VARCHAR(40) NOT NULL,
-       PRIMARY KEY (reviewID, restaurantName, restaurantLocation),
-       FOREIGN KEY (reviewID) REFERENCES Review1(reviewID),
-       FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
-);
-
 CREATE TABLE Media (
        filename VARCHAR(40)  PRIMARY KEY,
-       description VARCHAR(8000),
+       description VARCHAR(4000),
        journalID INTEGER  NOT NULL,
        FOREIGN KEY (journalID) REFERENCES Journal1(journalID)
-);
-
-CREATE TABLE DineInOrder (
-         orderID INTEGER  PRIMARY KEY,
-         totalPrice INTEGER,
-         tableNumber INTEGER,
-         accountID INTEGER NOT NULL,
-         restaurantName VARCHAR(40)  NOT NULL,
-         restaurantLocation VARCHAR(40) NOT NULL,
-         FOREIGN KEY (accountID) REFERENCES Account2(accountID),
-         FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
-);
-
-CREATE TABLE PickupOrder (
-         orderID INTEGER  PRIMARY KEY,
-         totalPrice INTEGER,
-         pickupNumber INTEGER,
-         accountID INTEGER  NOT NULL,
-         restaurantName VARCHAR(40) NOT NULL,
-         restaurantLocation VARCHAR(40) NOT NULL,
-         FOREIGN KEY (accountID) REFERENCES Account2(accountID),
-         FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
 );
 
 CREATE TABLE Restaurant1 (
@@ -96,8 +44,7 @@ CREATE TABLE Restaurant2 (
          name VARCHAR(40),
          location VARCHAR(40),
          waitlistID INTEGER UNIQUE,
-         PRIMARY KEY (name, location),
-         FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID)
+         PRIMARY KEY (name, location)
 );
 
 CREATE TABLE Restaurant_Staff1 (
@@ -115,6 +62,24 @@ CREATE TABLE Restaurant_Staff1 (
 CREATE TABLE Restaurant_Staff2 (
        staffID INTEGER PRIMARY KEY,
        name VARCHAR(80)
+);
+
+CREATE TABLE Review1 (
+                         comments VARCHAR(4000),
+                         reviewID INTEGER  PRIMARY KEY,
+                         journalID INTEGER,
+                         restaurantName VARCHAR(40)  NOT NULL,
+                         restaurantLocation VARCHAR(40) NOT NULL,
+                         FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
+                         FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
+);
+
+CREATE TABLE Review2 (
+                         tags VARCHAR(40),
+                         journalID INTEGER PRIMARY KEY,
+                         accountID INTEGER  NOT NULL,
+                         FOREIGN KEY (journalID) REFERENCES Journal1(journalID),
+                         FOREIGN KEY (accountID) REFERENCES Account2(accountID)
 );
 
 CREATE TABLE Waitlist1 (
@@ -144,6 +109,42 @@ CREATE TABLE Joins (
        FOREIGN KEY (accountID) REFERENCES Account2(accountID),
        FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID)
 );
+
+CREATE TABLE Rates (
+                       foodRating INTEGER,
+                       serviceRating INTEGER,
+                       affordabilityRating INTEGER,
+                       reviewID INTEGER NOT NULL,
+                       restaurantName VARCHAR(40) NOT NULL,
+                       restaurantLocation VARCHAR(40) NOT NULL,
+                       PRIMARY KEY (reviewID, restaurantName, restaurantLocation),
+                       FOREIGN KEY (reviewID) REFERENCES Review1(reviewID),
+                       FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
+);
+
+CREATE TABLE DineInOrder (
+                             orderID INTEGER  PRIMARY KEY,
+                             totalPrice INTEGER,
+                             tableNumber INTEGER,
+                             accountID INTEGER NOT NULL,
+                             restaurantName VARCHAR(40)  NOT NULL,
+                             restaurantLocation VARCHAR(40) NOT NULL,
+                             FOREIGN KEY (accountID) REFERENCES Account2(accountID),
+                             FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
+);
+
+CREATE TABLE PickupOrder (
+                             orderID INTEGER  PRIMARY KEY,
+                             totalPrice INTEGER,
+                             pickupNumber INTEGER,
+                             accountID INTEGER  NOT NULL,
+                             restaurantName VARCHAR(40) NOT NULL,
+                             restaurantLocation VARCHAR(40) NOT NULL,
+                             FOREIGN KEY (accountID) REFERENCES Account2(accountID),
+                             FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location)
+);
+
+ALTER TABLE Restaurant2 ADD FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID);
 
 INSERT
 INTO Account1(phoneNumber, name)
