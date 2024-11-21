@@ -22,7 +22,7 @@ CREATE TABLE Journal2 (
 CREATE TABLE Friends (
          accountID INTEGER,
          friendID INTEGER,
-         PRIMARY KEY (accountID, friendID),
+         PRIMARY KEY (accountID, friendID)
 );
 
 CREATE TABLE Media (
@@ -124,6 +124,22 @@ CREATE TABLE PickupOrder (
 );
 
 INSERT
+INTO Restaurant2(name, location, waitlistID)
+VALUES('test1s name', 'test1s location', '1');
+INSERT
+INTO Restaurant2(name, location, waitlistID)
+VALUES('test2s name', 'test2s location', '2');
+INSERT
+INTO Restaurant2(name, location, waitlistID)
+VALUES('test3s name', 'test3s location', '3');
+INSERT
+INTO Restaurant2(name, location, waitlistID)
+VALUES('test4s name', 'test4s location', '4');
+INSERT
+INTO Restaurant2(name, location, waitlistID)
+VALUES('test5s name', 'test5s location', '5');
+
+INSERT
 INTO Account1(phoneNumber, name)
 VALUES ('1234567890', 'A');
 INSERT
@@ -210,19 +226,19 @@ ALTER TABLE Friends ADD FOREIGN KEY (friendID) REFERENCES Account2(accountID);
 
 INSERT
 INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
-VALUES ('test1s comment', '123', '1', 'test1s Food', 'test1s location');
+VALUES ('test1s comment', '123', '1', 'test1s name', 'test1s location');
 INSERT
 INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
-VALUES ('test2s comment', '234', '2', 'test2s Food', 'test2s location');
+VALUES ('test2s comment', '234', '2', 'test2s name', 'test2s location');
 INSERT
 INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
-VALUES ('test3s comment', '345', '3', 'test3s Food', 'test3s location');
+VALUES ('test3s comment', '345', '3', 'test3s name', 'test3s location');
 INSERT
 INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
-VALUES ('test4s comment', '456', '4', 'test4s Food', 'test4s location');
+VALUES ('test4s comment', '456', '4', 'test4s name', 'test4s location');
 INSERT
 INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
-VALUES ('test5s comment', '567', '5', 'test5s Food', 'test5s location');
+VALUES ('test5s comment', '567', '5', 'test5s name', 'test5s location');
 
 ALTER TABLE Review1 ADD FOREIGN KEY (journalID) REFERENCES Journal1(journalID);
 ALTER TABLE Review1 ADD FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location);
@@ -248,19 +264,19 @@ ALTER TABLE Review2 ADD FOREIGN KEY (accountID) REFERENCES Account2(accountID);
 
 INSERT
 INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
-VALUES('3', '4', '5', '123', 'test1s Food', 'test1s location');
+VALUES('3', '4', '5', '123', 'test1s name', 'test1s location');
 INSERT
 INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
-VALUES('4', '4', '4', '234', 'test2s Food', 'test2s location');
+VALUES('4', '4', '4', '234', 'test2s name', 'test2s location');
 INSERT
 INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
-VALUES('5', '4', '4', '345', 'test3s Food', 'test3s location');
+VALUES('5', '4', '4', '345', 'test3s name', 'test3s location');
 INSERT
 INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
-VALUES('4', '4', '3', '456', 'test4s Food', 'test4s location');
+VALUES('4', '4', '3', '456', 'test4s name', 'test4s location');
 INSERT
 INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
-VALUES('5', '5', '5', '567', 'test5s Food', 'test5s location');
+VALUES('5', '5', '5', '567', 'test5s name', 'test5s location');
 
 ALTER TABLE Rates ADD FOREIGN KEY (reviewID) REFERENCES Review1(reviewID);
 ALTER TABLE Rates ADD FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location);
@@ -285,38 +301,38 @@ ALTER TABLE Media ADD FOREIGN KEY (journalID) REFERENCES Journal1(journalID);
 
 INSERT
 INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90001', '100', '7001', '0001', 'test1s Food', 'test1s location');
+VALUES ('90001', '100', '7001', '0001', 'test1s name', 'test1s location');
 INSERT
 INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90002', '50', '7005', '0002', 'test2s Food', 'test2s location');
+VALUES ('90002', '50', '7005', '0002', 'test2s name', 'test2s location');
 INSERT
 INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90003', '200', '7003', '0003', 'test3s Food', 'test3s location');
+VALUES ('90003', '200', '7003', '0003', 'test3s name', 'test3s location');
 INSERT
 INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90004', '15', '7002', '0004', 'test4s Food', 'test4s location');
+VALUES ('90004', '15', '7002', '0004', 'test4s name', 'test4s location');
 INSERT
 INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90005', '75', '7006', '0005', 'test5s Food', 'test5s location');
+VALUES ('90005', '75', '7006', '0005', 'test5s name', 'test5s location');
 
 ALTER TABLE DineInOrder ADD FOREIGN KEY (accountID) REFERENCES Account2(accountID);
 ALTER TABLE DineInOrder ADD FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location);
 
 INSERT
 INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90006', '80', '7010', '0001', 'test1s Food', 'test1s location');
+VALUES ('90006', '80', '7010', '0001', 'test1s name', 'test1s location');
 INSERT
 INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90007', '16', '7011', '0003', 'test2s Food', 'test2s location');
+VALUES ('90007', '16', '7011', '0003', 'test2s name', 'test2s location');
 INSERT
 INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90008', '38', '7012', '0002', 'test3s Food', 'test3s location');
+VALUES ('90008', '38', '7012', '0002', 'test3s name', 'test3s location');
 INSERT
 INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90009', '80', '7013', '0004', 'test4s Food', 'test4s location');
+VALUES ('90009', '80', '7013', '0004', 'test4s name', 'test4s location');
 INSERT
 INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90010', '110', '7014', '0005', 'test5s Food', 'test5s location');
+VALUES ('90010', '110', '7014', '0005', 'test5s name', 'test5s location');
 
 ALTER TABLE PickupOrder ADD FOREIGN KEY (accountID) REFERENCES Account2(accountID);
 ALTER TABLE PickupOrder ADD FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location);
@@ -338,38 +354,20 @@ INTO Restaurant1(cuisineTag, menu)
 VALUES ('Chinese', 'Hot pot, Milk tea');
 
 INSERT
-INTO Restaurant2(name, location, waitlistID)
-VALUES('test1s name', 'test1s location', '1');
-INSERT
-INTO Restaurant2(name, location, waitlistID)
-VALUES('test2s name', 'test2s location', '2');
-INSERT
-INTO Restaurant2(name, location, waitlistID)
-VALUES('test3s name', 'test3s location', '3');
-INSERT
-INTO Restaurant2(name, location, waitlistID)
-VALUES('test4s name', 'test4s location', '4');
-INSERT
-INTO Restaurant2(name, location, waitlistID)
-VALUES('test5s name', 'test5s location', '5');
-
-ALTER TABLE Restaurant2 ADD FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID);
-
+INTO Restaurant_Staff1(restaurantName, restaurantLocation, staffID, position)
+VALUES('test1s name', 'test1s location', '01', 'Chef');
 INSERT
 INTO Restaurant_Staff1(restaurantName, restaurantLocation, staffID, position)
-VALUES('test1s Food', 'test1s location', '01', 'Chef');
+VALUES('test2s name', 'test2s location', '02', 'Server');
 INSERT
 INTO Restaurant_Staff1(restaurantName, restaurantLocation, staffID, position)
-VALUES('test2s Food', 'test2s location', '02', 'Server');
+VALUES('test3s name', 'test3s location', '03', 'Barista');
 INSERT
 INTO Restaurant_Staff1(restaurantName, restaurantLocation, staffID, position)
-VALUES('test3s Food', 'test3s location', '03', 'Barista');
+VALUES('test4s name', 'test4s location', '04', 'Chef');
 INSERT
 INTO Restaurant_Staff1(restaurantName, restaurantLocation, staffID, position)
-VALUES('test4s Food', 'test4s location', '04', 'Chef');
-INSERT
-INTO Restaurant_Staff1(restaurantName, restaurantLocation, staffID, position)
-VALUES('test5s Food', 'test5s location', '05', 'Server');
+VALUES('test5s name', 'test5s location', '05', 'Server');
 
 ALTER TABLE Restaurant_Staff1 ADD FOREIGN KEY (restaurantName, restaurantLocation)
     REFERENCES Restaurant2(name, location)
@@ -444,4 +442,6 @@ INTO Joins(position, accountID, waitlistID)
 VALUES ('2', '0005', '3');
 
 ALTER TABLE Joins ADD FOREIGN KEY (accountID) REFERENCES Account2(accountID);
-ALTER TABLE Joins ADD FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID);
+ALTER TABLE Joins ADD FOREIGN KEY (waitlistID) REFERENCES Restaurant2(waitlistID);
+
+ALTER TABLE Restaurant2 ADD FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID);
