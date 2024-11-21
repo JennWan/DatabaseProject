@@ -107,41 +107,6 @@ async function insertDemotable(event) {
     }
 }
 
-async function insertRatesTable(event) {
-    event.preventDefault();
-    const foodRatingValue = document.getElementById('insertFoodRating').value;
-    const serviceRatingValue = document.getElementById('insertServiceRating').value;
-    const affordabilityRatingValue = document.getElementById('insertAffordabilityRating').value;
-    const reviewIDValue = document.getElementById('insertReviewID').value;
-    const restaurantNameValue = document.getElementById('insertRestaurantName').value;
-    const restaurantLocationValue = document.getElementById('insertRestaurantLocation').value;
-
-    const response = await fetch('/insert-rates-table', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            foodRating: foodRatingValue,
-            serviceRating: serviceRatingValue,
-            affordabilityRating: affordabilityRatingValue,
-            reviewID: reviewIDValue,
-            restaurantName: restaurantNameValue,
-            restaurantLocation: restaurantLocationValue
-        })
-    });
-
-    const responseData = await response.json();
-    const messageElement = document.getElementById('insertRatesResultMsg');
-
-    if (responseData.success) {
-        messageElement.textContent = "Data inserted successfully!";
-        fetchTableData();
-    } else {
-        messageElement.textContent = "Error inserting data! Could not find foreign keys (review id, restaurant name and restaurant location).";
-    }
-}
-
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
     event.preventDefault();
@@ -198,7 +163,6 @@ window.onload = function() {
     fetchTableData();
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
-    document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
