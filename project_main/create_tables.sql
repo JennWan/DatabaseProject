@@ -442,6 +442,6 @@ INTO Joins(position, accountID, waitlistID)
 VALUES ('2', '0005', '3');
 
 ALTER TABLE Joins ADD FOREIGN KEY (accountID) REFERENCES Account2(accountID);
-ALTER TABLE Joins ADD FOREIGN KEY (waitlistID) REFERENCES Restaurant2(waitlistID);
+ALTER TABLE Joins ADD FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID);
 
 ALTER TABLE Restaurant2 ADD FOREIGN KEY (waitlistID) REFERENCES Waitlist1(waitlistID);
