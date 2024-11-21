@@ -60,6 +60,21 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    <h2> Insert Values into Rates Table </h2>
+    <form id="insertRatesTable">
+        foodRating: <input type="number" id="insertFoodRating" placeholder="Enter food rating (out of 5)" required> <br><br>
+        serviceRating: <input type="number" id="insertServiceRating" placeholder="Enter service rating (out of 5)" required> <br><br>
+        affordabilityRating: <input type="number" id="insertAffordabilityRating" placeholder="Enter affordability rating (out of 5)" required> <br><br>
+        reviewID: <input type="number" id="insertReviewID" placeholder="Enter review ID" required> <br><br>
+        restaurantName: <input type="text" id="insertRestaurantName" placeholder="Enter restaurant name" maxlength="40"> <br><br>
+        restaurantLocation: <input type="text" id="insertRestaurantLocation" placeholder="Enter restaurant location" maxlength="40"> <br><br>
+
+        <button name="insertRates" type="submit"> insert into rates </button> <br>
+    </form>
+    <div id="insertRatesResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
     <h2>Update Name in DemoTable</h2>
     <p>The values are case sensitive and if you enter in the wrong case, the update statement will not do anything.</p>
     <form id="updataNameDemotable">
