@@ -158,6 +158,17 @@ async function projectRestaurant(cuisineTag, menu) {
     });
 }
 
+async function aggregationHaving() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT CAST(AVG(foodRating) AS DECIMAL(3, 2)) AS avgFoodRating, CAST(AVG(serviceRating) AS DECIMAL(3, 2)) AS avgServiceRating, CAST(AVG(affordabilityRating) AS DECIMAL(3, 2)) AS avgAffordabilityRating, restaurantName, restaurantLocation FROM Rates GROUP BY restaurantName, restaurantLocation HAVING Count(*) >= 2'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
@@ -175,5 +186,6 @@ module.exports = {
     updateNameDemotable, 
     countDemotable,
     insertRatesTable,
-    projectRestaurant
+    projectRestaurant,
+    aggregationHaving
 };

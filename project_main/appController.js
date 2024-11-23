@@ -61,9 +61,12 @@ router.post("/update-name-demotable", async (req, res) => {
 
 router.get('/project-restaurant', async (req, res) => {
     const {cuisineTag, menu} = req.body;
-    console.log("ROUTER.GET");
-    console.log(cuisineTag, menu);
     const tableContent = await appService.projectRestaurant(cuisineTag, menu);
+    res.json({data: tableContent});
+});
+
+router.get('/aggregation-having', async (req, res) => {
+    const tableContent = await appService.aggregationHaving();
     res.json({data: tableContent});
 });
 

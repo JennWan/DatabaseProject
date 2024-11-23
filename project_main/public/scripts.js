@@ -156,7 +156,6 @@ async function projectRestaurant(event) {
     const responseData = await response.json();
     const restaurantTableContent = responseData.data;
 
-    console.log(restaurantTableContent);
     const tableElement = document.getElementById('displayRestaurant');
     const tableBody = tableElement.querySelector('tbody');
 
@@ -166,9 +165,7 @@ async function projectRestaurant(event) {
     }
     // display columns you want
     let displayCol0 = cuisineTagValue.checked;
-    console.log("are we displaying col 0: " + displayCol0);
     let displayCol1 = menuValue.checked;
-    console.log("are we displaying col 1: " + displayCol1);
     restaurantTableContent.forEach(user => {
         const row = tableBody.insertRow();
         user.forEach((field, index) => {
@@ -179,6 +176,31 @@ async function projectRestaurant(event) {
             if (index === 1 && !displayCol1) {
                 return;
             }
+            cell.textContent = field;
+        });
+    });
+}
+
+async function aggregationHaving() {
+    const tableElement = document.getElementById('displayHaving');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/aggregation-having', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const havingTableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    havingTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
             cell.textContent = field;
         });
     });
@@ -244,6 +266,7 @@ window.onload = function() {
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("projectRestaurant").addEventListener("submit", projectRestaurant);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
 };
 
 // General function to refresh the displayed table data. 
