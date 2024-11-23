@@ -62,14 +62,14 @@
 
     <h2> Insert Values into Rates Table </h2>
     <form id="insertRatesTable">
-        foodRating: <input type="number" id="insertFoodRating" placeholder="Enter food rating (out of 5)" required> <br><br>
-        serviceRating: <input type="number" id="insertServiceRating" placeholder="Enter service rating (out of 5)" required> <br><br>
-        affordabilityRating: <input type="number" id="insertAffordabilityRating" placeholder="Enter affordability rating (out of 5)" required> <br><br>
-        reviewID: <input type="number" id="insertReviewID" placeholder="Enter review ID" required> <br><br>
-        restaurantName: <input type="text" id="insertRestaurantName" placeholder="Enter restaurant name" maxlength="40"> <br><br>
-        restaurantLocation: <input type="text" id="insertRestaurantLocation" placeholder="Enter restaurant location" maxlength="40"> <br><br>
+        Food Rating: <input type="number" id="insertFoodRating" placeholder="Enter food rating (out of 5)" required> <br><br>
+        Service Rating: <input type="number" id="insertServiceRating" placeholder="Enter service rating (out of 5)" required> <br><br>
+        Affordability Rating: <input type="number" id="insertAffordabilityRating" placeholder="Enter affordability rating (out of 5)" required> <br><br>
+        Review ID: <input type="number" id="insertReviewID" placeholder="Enter review ID" required> <br><br>
+        Restaurant Name: <input type="text" id="insertRestaurantName" placeholder="Enter restaurant name" maxlength="40"> <br><br>
+        Restaurant Location: <input type="text" id="insertRestaurantLocation" placeholder="Enter restaurant location" maxlength="40"> <br><br>
 
-        <button name="insertRates" type="submit"> insert into rates </button> <br>
+        <button name="insertRates" type="submit"> insert </button> <br>
     </form>
     <div id="insertRatesResultMsg"></div>
 
@@ -85,6 +85,52 @@
     </form>
     <!-- A placeholder to display messages related to the update operation. -->
     <div id="updateNameResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2> Project onto Restaurant1 </h2>
+    <form id="projectRestaurant" >
+        Cuisine Tag: <input type="checkbox" id="projectCuisineTag" name="projectCuisineTag"> <br><br>
+        Menu: <input type="checkbox" id="projectMenu" name="projectMenu" value="menu"> <br><br>
+
+        <button type="submit"> get data </button> <br>
+    </form>
+    <div id="projectResultMsg"></div>
+
+    <h2>Results</h2>
+    <table id="displayRestaurant" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Cuisine Tag</th>
+            <th>Menu</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2> Having Aggregation </h2>
+    <form id="aggregateHaving" >
+
+        <button type="submit"> get data </button> <br>
+    </form>
+    <div id="aggregateHavingResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Show Rates Table</h2>
+    <table id="displayRates" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <br><hr><br> <!-- ========================================================================= -->
 

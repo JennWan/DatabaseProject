@@ -147,6 +147,17 @@ async function updateNameDemotable(oldName, newName) {
     });
 }
 
+async function projectRestaurant(cuisineTag, menu) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT * FROM Restaurant1'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
@@ -163,5 +174,6 @@ module.exports = {
     insertDemotable, 
     updateNameDemotable, 
     countDemotable,
-    insertRatesTable
+    insertRatesTable,
+    projectRestaurant
 };

@@ -136,10 +136,52 @@ async function insertRatesTable(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
-        fetchTableData();
     } else {
-        messageElement.textContent = "Error inserting data! Could not find foreign keys (review id, restaurant name and restaurant location).";
+        messageElement.textContent = "Error inserting data! Make sure foreign keys match.";
     }
+}
+
+// projects on the restaurant1 table
+async function projectRestaurant(event) {
+    event.preventDefault();
+
+    const cuisineTagValue = document.getElementById('projectCuisineTag');
+    const menuValue = document.getElementById('projectMenu');
+
+    // get full table
+    const response = await fetch('/project-restaurant', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const restaurantTableContent = responseData.data;
+
+    console.log(restaurantTableContent);
+    const tableElement = document.getElementById('displayRestaurant');
+    const tableBody = tableElement.querySelector('tbody');
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+    // display columns you want
+    let displayCol0 = cuisineTagValue.checked;
+    console.log("are we displaying col 0: " + displayCol0);
+    let displayCol1 = menuValue.checked;
+    console.log("are we displaying col 1: " + displayCol1);
+    restaurantTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            if (index === 0 && !displayCol0) {
+                return;
+            }
+            if (index === 1 && !displayCol1) {
+                return;
+            }
+            cell.textContent = field;
+        });
+    });
 }
 
 // Updates names in the demotable.
@@ -200,6 +242,7 @@ window.onload = function() {
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    document.getElementById("projectRestaurant").addEventListener("submit", projectRestaurant);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
 
