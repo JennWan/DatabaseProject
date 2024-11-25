@@ -107,12 +107,12 @@ async function insertDemotable(event) {
     }
 }
 
-async function insertJournal2Table(event) {
+async function deleteJournal2Table(event) {
     event.preventDefault();
     const titleValue = document.getElementById('insertTitle').value;
     const descriptionValue = document.getElementById('insertDescription').value;
 
-    const response = await fetch('/insert-journal2-table', {
+    const response = await fetch('/delete-journal2-table', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -189,7 +189,7 @@ window.onload = function() {
     fetchTableData();
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
-    document.getElementById("insertJournal2Table").addEventListener("submit", insertJournal2Table);
+    document.getElementById("deleteJournal2Table").addEventListener("submit", deleteJournal2Table);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };

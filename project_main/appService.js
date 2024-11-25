@@ -119,7 +119,7 @@ async function insertDemotable(id, name) {
     });
 }
 
-async function insertJournal2Table(title, description) {
+async function deleteJournal2Table(title, description) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `DELETE FROM JOURNAL2 (title, description) VALUES (:title, :description)`,
@@ -163,5 +163,5 @@ module.exports = {
     insertDemotable, 
     updateNameDemotable, 
     countDemotable,
-    insertJournal2Table
+    deleteJournal2Table
 };
