@@ -109,6 +109,7 @@ async function insertDemotable(event) {
 
 async function deleteJournal2Table(event) {
     event.preventDefault();
+
     const titleValue = document.getElementById('insertTitle').value;
     const descriptionValue = document.getElementById('insertDescription').value;
 
@@ -180,20 +181,29 @@ async function countDemotable() {
     }
 }
 
-async function averageDineInOrderPrice() {
-    const response = await fetch("/average-dineintable-price", {
+async function countDineInOrder() {
+    const tableElement = document.getElementById('displayGroupBy');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/count-dineinorder', {
         method: 'GET'
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('averageResultMsg');
+    const havingTableContent = responseData.data;
 
-    if (responseData.success) {
-        const tupleAverage = responseData.count;
-        messageElement.textContent = `The average price of the total orders from this account: ${tupleAverage}`;
-    } else {
-        alert("Error in counting the average in Dine In Order!");
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
     }
+
+    havingTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
 }
 
 
@@ -208,7 +218,7 @@ window.onload = function() {
     document.getElementById("deleteJournal2Table").addEventListener("submit", deleteJournal2Table);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
-    document.getElementById("averageDineInOrderPrice").addEventListener("click", averageDineInOrderPrice);
+    document.getElementById("countDineInOrder").addEventListener("click", countDineInOrder);
 };
 
 // General function to refresh the displayed table data. 

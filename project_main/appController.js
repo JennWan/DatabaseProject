@@ -74,19 +74,9 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
-router.get('/average-dineintable-price', async (req, res) => {
-    const avgPrice = await appService.averageDineInOrderPrice();
-    if (avgPrice >= 0) {
-        res.json({
-            success: true,
-            count: avgPrice
-        });
-    } else {
-        res.status(500).json({
-            success: false,
-            count: avgPrice
-        });
-    }
+router.get('/count-dineinorder', async (req, res) => {
+    const tableContent = await appService.countDineInOrder();
+    res.json({data: tableContent});
 });
 
 
