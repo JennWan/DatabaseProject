@@ -156,6 +156,15 @@ async function countDemotable() {
     });
 }
 
+async function averageDineInOrderPrice() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT CAST(AVG(totalPrice) AS DECIMAL(3, 2)) AS avgTotalPrice FROM DINEINORDER GROUP BY accountID');
+        return result.rows[0][0];
+    }).catch(() => {
+        return -1;
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -163,5 +172,6 @@ module.exports = {
     insertDemotable, 
     updateNameDemotable, 
     countDemotable,
-    deleteJournal2Table
+    deleteJournal2Table,
+    averageDineInOrderPrice
 };

@@ -180,6 +180,22 @@ async function countDemotable() {
     }
 }
 
+async function averageDineInOrderPrice() {
+    const response = await fetch("/average-dineintable-price", {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('averageResultMsg');
+
+    if (responseData.success) {
+        const tupleAverage = responseData.count;
+        messageElement.textContent = `The average price of the total orders from this account: ${tupleAverage}`;
+    } else {
+        alert("Error in counting the average in Dine In Order!");
+    }
+}
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -192,6 +208,7 @@ window.onload = function() {
     document.getElementById("deleteJournal2Table").addEventListener("submit", deleteJournal2Table);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("averageDineInOrderPrice").addEventListener("click", averageDineInOrderPrice);
 };
 
 // General function to refresh the displayed table data. 
