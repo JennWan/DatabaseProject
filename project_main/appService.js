@@ -119,6 +119,20 @@ async function insertDemotable(id, name) {
     });
 }
 
+async function insertJournal2Table(title, description) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `DELETE FROM JOURNAL2 (title, description) VALUES (:title, :description)`,
+            [title, description],
+            { autoCommit: true }
+        );
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -148,5 +162,6 @@ module.exports = {
     initiateDemotable, 
     insertDemotable, 
     updateNameDemotable, 
-    countDemotable
+    countDemotable,
+    insertJournal2Table
 };

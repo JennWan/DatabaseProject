@@ -107,6 +107,32 @@ async function insertDemotable(event) {
     }
 }
 
+async function insertJournal2Table(event) {
+    event.preventDefault();
+    const titleValue = document.getElementById('insertTitle').value;
+    const descriptionValue = document.getElementById('insertDescription').value;
+
+    const response = await fetch('/insert-journal2-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            title: titleValue,
+            description: descriptionValue
+        })
+    });
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('deleteJournal2ResultMsg');
+
+    if (responseData.success) {
+        messageElement.textContent = "Data deleted successfully!";
+    } else {
+        messageElement.textContent = "Error deleting data! Make sure the entries match.";
+    }
+}
+
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
     event.preventDefault();
@@ -163,6 +189,7 @@ window.onload = function() {
     fetchTableData();
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
+    document.getElementById("insertJournal2Table").addEventListener("submit", insertJournal2Table);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
 };
