@@ -227,7 +227,7 @@ async function countDineInOrder() {
 async function nestedAggregation() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            'SELECT * FROM (SELECT accountID, CAST(AVG(totalPrice) AS DECIMAL(5, 2)) AS avgTotalPrice FROM DineInOrder GROUP BY accountID) WHERE avgTotalPrice >= 100'
+            'SELECT * FROM (SELECT accountID, CAST(AVG(totalPrice) AS DECIMAL(6, 2)) AS avgTotalPrice FROM DineInOrder GROUP BY accountID) WHERE avgTotalPrice >= 100'
         );
         return result.rows;
     }).catch(() => {
