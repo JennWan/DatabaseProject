@@ -39,6 +39,16 @@ router.post("/insert-demotable", async (req, res) => {
     }
 });
 
+router.post("/insert-rates-table", async (req, res) => {
+    const { foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation } = req.body;
+    const insertResult = await appService.insertRatesTable(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 router.post("/delete-journal2-table", async (req, res) => {
     const { title, description } = req.body;
     const insertResult = await appService.deleteJournal2Table(title, description);

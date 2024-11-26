@@ -105,9 +105,25 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    <h2> Insert Values into Rates Table </h2>
+    <form id="insertRatesTable">
+        Food Rating: <input type="number" id="insertFoodRating" placeholder="Enter food rating (out of 5)" required> <br><br>
+        Service Rating: <input type="number" id="insertServiceRating" placeholder="Enter service rating (out of 5)" required> <br><br>
+        Affordability Rating: <input type="number" id="insertAffordabilityRating" placeholder="Enter affordability rating (out of 5)" required> <br><br>
+        Review ID: <input type="number" id="insertReviewID" placeholder="Enter review ID" required> <br><br>
+        Restaurant Name: <input type="text" id="insertRestaurantName" placeholder="Enter restaurant name" maxlength="40"> <br><br>
+        Restaurant Location: <input type="text" id="insertRestaurantLocation" placeholder="Enter restaurant location" maxlength="40"> <br><br>
+
+
+        <button name="insertRates" type="submit"> insert </button> <br>
+    </form>
+    <div id="insertRatesResultMsg"></div>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
     <h2> Delete Values from Journal2 Table </h2>
     <p>The values are case-sensitive and if you input the wrong case, the delete statement will not do anything.</p>
-    <form id="insertRatesTable">
+    <form id="deleteJournal2Table">
         Title: <input type="text" id="insertTitle" placeholder="Enter title" required> <br><br>
         Description: <input type="text" id="insertDescription" placeholder="Enter description" required> <br><br>
 

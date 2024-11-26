@@ -119,6 +119,21 @@ async function insertDemotable(id, name) {
     });
 }
 
+async function insertRatesTable(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO RATES (foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation) VALUES (:foodRating, :serviceRating, :affordabilityRating, :reviewID, :restaurantName, :restaurantLocation)`,
+            [foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation],
+            { autoCommit: true }
+        );
+
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function deleteJournal2Table(title, description) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -217,7 +232,7 @@ module.exports = {
     countDemotable,
     insertRatesTable,
     projectRestaurant,
-    aggregationHaving
+    aggregationHaving,
     deleteJournal2Table,
     displayJournal2Table,
     searchRestaurant,
