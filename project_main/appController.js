@@ -72,7 +72,7 @@ router.post('/search', async (req, res) => {
         const results = await appService.searchRestaurant(queryString);
         res.json(results);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to execute search query' });
+        res.status(500).json({ error: 'Failed to execute selection query' });
     }
 });
 
