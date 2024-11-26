@@ -119,17 +119,27 @@ async function insertDemotable(id, name) {
     });
 }
 
-async function insertRatesTable(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation) {
+async function deleteJournal2Table(title, description) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `INSERT INTO RATES (foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation) VALUES (:foodRating, :serviceRating, :affordabilityRating, :reviewID, :restaurantName, :restaurantLocation)`,
-            [foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation],
+            `DELETE FROM JOURNAL2 (title, description) VALUES (:title, :description)`,
+            [title, description],
             { autoCommit: true }
         );
 
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
+    });
+}
+
+async function displayJournal2Table() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM JOURNAL2'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
     });
 }
 
@@ -147,12 +157,22 @@ async function updateNameDemotable(oldName, newName) {
     });
 }
 
+
 async function projectRestaurant(cuisineTag, menu) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             'SELECT * FROM Restaurant1'
         );
         return result.rows;
+    }
+}
+
+async function searchRestaurant(queryString) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT * FROM Restaurant2 WHERE ${queryString}`
+        );
+        return result.rows;  // Return the rows that match the query
     }).catch(() => {
         return [];
     });
@@ -178,6 +198,16 @@ async function countDemotable() {
     });
 }
 
+async function countDineInOrder() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT Count(*) AS orderCount FROM DINEINORDER GROUP BY accountID'
+    );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -188,4 +218,8 @@ module.exports = {
     insertRatesTable,
     projectRestaurant,
     aggregationHaving
+    deleteJournal2Table,
+    displayJournal2Table,
+    searchRestaurant,
+    countDineInOrder
 };

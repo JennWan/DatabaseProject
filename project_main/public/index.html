@@ -6,6 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Link to the external CSS stylesheet. Uncomment if you wish to customize or add styling. -->
+    <style>
+        /* Change background color */
+        body {
+            background-color: #f4f4f9; /* Light gray background */
+            font-family: 'Arial', sans-serif; /* Change font to Arial */
+            color: #333; /* Set text color to a dark shade */
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50; /* Darker color for headings */
+        }
+
+        /* Add hover effect on table rows */
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Button styling */
+        .button {
+            background-color: #a2cffe; /* Blue background for buttons */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .button:hover {
+            background-color: #1e3a5f; /* Darker blue on hover */
+        }
+
+        /* Style for form inputs */
+        input[type="text"], input[type="number"], select {
+            padding: 8px;
+            margin: 5px 0;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Style for the form labels */
+        form label {
+            font-weight: bold;
+        }
+    </style>
     <!-- <link rel="stylesheet" href="styles.css">   -->
 
     <title>Database Application</title>
@@ -60,18 +105,28 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
-    <h2> Insert Values into Rates Table </h2>
+    <h2> Delete Values from Journal2 Table </h2>
+    <p>The values are case-sensitive and if you input the wrong case, the delete statement will not do anything.</p>
     <form id="insertRatesTable">
-        Food Rating: <input type="number" id="insertFoodRating" placeholder="Enter food rating (out of 5)" required> <br><br>
-        Service Rating: <input type="number" id="insertServiceRating" placeholder="Enter service rating (out of 5)" required> <br><br>
-        Affordability Rating: <input type="number" id="insertAffordabilityRating" placeholder="Enter affordability rating (out of 5)" required> <br><br>
-        Review ID: <input type="number" id="insertReviewID" placeholder="Enter review ID" required> <br><br>
-        Restaurant Name: <input type="text" id="insertRestaurantName" placeholder="Enter restaurant name" maxlength="40"> <br><br>
-        Restaurant Location: <input type="text" id="insertRestaurantLocation" placeholder="Enter restaurant location" maxlength="40"> <br><br>
+        Title: <input type="text" id="insertTitle" placeholder="Enter title" required> <br><br>
+        Description: <input type="text" id="insertDescription" placeholder="Enter description" required> <br><br>
 
-        <button name="insertRates" type="submit"> insert </button> <br>
+        <button name="deleteJournal2" type="submit"> delete </button> <br>
     </form>
-    <div id="insertRatesResultMsg"></div>
+    <div id="deleteJournal2ResultMsg"></div>
+
+    <h3>Show Journal2 Table</h3>
+    <table id="displayJournal2" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Title</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <br><hr><br> <!-- ========================================================================= -->
 
@@ -139,6 +194,43 @@
         <thead>
         <tr>
             <!--Table head, need to be adjusted accordingly to align with your own.-->
+    <h2>Search Restaurants</h2>
+    <form id="searchForm">
+        <div id="searchConditions">
+            <!-- Initial condition input -->
+            <div class="condition">
+                <select name="attribute[]">
+                    <option value="name">Name</option>
+                    <option value="location">Location</option>
+                    <option value="waitlistID">Waitlist ID</option>
+                </select>
+                <select name="operator[]">
+                    <option value="=">=</option>
+                    <option value="!=">!=</option>
+                    <option value="<">&lt;</option>
+                    <option value=">">&gt;</option>
+                    <option value="<=">&lt;=</option>
+                    <option value=">=">&gt;=</option>
+                </select>
+                <input type="text" name="value[]" placeholder="Enter value">
+                <select name="logical_operator[]">
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" class="button" onclick="addSearchCondition()">Add Another Condition</button>
+        <button type="submit" class="button">Search</button>
+    </form>
+
+    <h3>Search Results</h3>
+    <table id="searchResults" border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Waitlist ID</th>
         </tr>
         </thead>
         <tbody>
@@ -151,6 +243,26 @@
     <button id="countDemotable"> count </button> <br><br>
     <!-- A placeholder to display the count result. -->
     <div id="countResultMsg"></div> <br>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
+    <h2>Display the Number of Dine-in Orders Made by Each Account</h2>
+    <button id="countDineInOrder"> compute </button> <br><br>
+    <!-- A placeholder to display the count result. -->
+    <div id="countDineInResultMsg"></div>
+
+    <h3>Results</h3>
+    <table id="displayGroupBy" border="1">
+        <thead>
+        <tr>
+            <!--Table head, need to be adjusted accordingly to align with your own.-->
+            <th>Account ID</th>
+            <th>Order Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <!-- ===================================================================================== -->
     <!-- External JavaScript file that contains the functionality/logic for the operations above. -->

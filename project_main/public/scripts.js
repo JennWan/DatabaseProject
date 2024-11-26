@@ -107,32 +107,25 @@ async function insertDemotable(event) {
     }
 }
 
-async function insertRatesTable(event) {
+async function deleteJournal2Table(event) {
     event.preventDefault();
-    const foodRatingValue = document.getElementById('insertFoodRating').value;
-    const serviceRatingValue = document.getElementById('insertServiceRating').value;
-    const affordabilityRatingValue = document.getElementById('insertAffordabilityRating').value;
-    const reviewIDValue = document.getElementById('insertReviewID').value;
-    const restaurantNameValue = document.getElementById('insertRestaurantName').value;
-    const restaurantLocationValue = document.getElementById('insertRestaurantLocation').value;
 
-    const response = await fetch('/insert-rates-table', {
+    const titleValue = document.getElementById('insertTitle').value;
+    const descriptionValue = document.getElementById('insertDescription').value;
+
+    const response = await fetch('/delete-journal2-table', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            foodRating: foodRatingValue,
-            serviceRating: serviceRatingValue,
-            affordabilityRating: affordabilityRatingValue,
-            reviewID: reviewIDValue,
-            restaurantName: restaurantNameValue,
-            restaurantLocation: restaurantLocationValue
+            title: titleValue,
+            description: descriptionValue
         })
     });
 
     const responseData = await response.json();
-    const messageElement = document.getElementById('insertRatesResultMsg');
+    const messageElement = document.getElementById('deleteJournal2ResultMsg');
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
@@ -206,6 +199,31 @@ async function aggregationHaving() {
     });
 }
 
+async function displayJournal2Table() {
+    const tableElement = document.getElementById('displayJournal2');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/display-journal2-table', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const journal2Content = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    journal2Content.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
     event.preventDefault();
@@ -235,6 +253,97 @@ async function updateNameDemotable(event) {
     }
 }
 
+// Function to add more condition blocks dynamically
+function addSearchCondition() {
+    var conditionDiv = document.createElement('div');
+    conditionDiv.classList.add('condition');
+    conditionDiv.innerHTML = `
+        <select name="attribute[]">
+            <option value="name">Name</option>
+            <option value="location">Location</option>
+            <option value="waitlistID">Waitlist ID</option>
+        </select>
+        <select name="operator[]">
+            <option value="=">=</option>
+            <option value="!=">!=</option>
+            <option value="<">&lt;</option>
+            <option value=">">&gt;</option>
+            <option value="<=">&lt;=</option>
+            <option value=">=">&gt;=</option>
+        </select>
+        <input type="text" name="value[]" placeholder="Enter value">
+        <select name="logical_operator[]">
+            <option value="AND">AND</option>
+            <option value="OR">OR</option>
+        </select>
+    `;
+    document.getElementById('searchConditions').appendChild(conditionDiv);
+}
+
+// Handle the search form submission
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();  // Prevent form from submitting normally
+
+    // Collect the search parameters
+    var attributes = document.querySelectorAll('[name="attribute[]"]');
+    var operators = document.querySelectorAll('[name="operator[]"]');
+    var values = document.querySelectorAll('[name="value[]"]');
+    var logicalOperators = document.querySelectorAll('[name="logical_operator[]"]');
+
+    var conditions = [];
+    for (let i = 0; i < attributes.length; i++) {
+        var attribute = attributes[i].value;
+        var operator = operators[i].value;
+        var value = values[i].value;
+        var logicalOperator = i < logicalOperators.length ? logicalOperators[i].value : '';
+
+        // Prepare the condition (e.g., "name = 'John'")
+        conditions.push(`${attribute} ${operator} '${value}'`);
+
+        // Add logical operator if it's not the last condition
+        if (i < attributes.length - 1) {
+            conditions.push(logicalOperator);
+        }
+    }
+
+    // Join the conditions with spaces and prepare the query
+    var queryString = conditions.join(' ');
+
+    // Send the query to the server (use fetch to send AJAX request)
+    fetch('/search', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query: queryString })
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Display the results in the table
+            var tableBody = document.getElementById('searchResults').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = '';  // Clear existing rows
+
+            if (data.length > 0) {
+                data.forEach(row => {
+                    var tr = document.createElement('tr');
+                    tr.innerHTML = `
+                    <td>${row.name}</td>
+                    <td>${row.location}</td>
+                    <td>${row.waitlistID}</td>
+                `;
+                    tableBody.appendChild(tr);
+                });
+            } else {
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="3">No results found.</td>';
+                tableBody.appendChild(tr);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+});
+
 // Counts rows in the demotable.
 // Modify the function accordingly if using different aggregate functions or procedures.
 async function countDemotable() {
@@ -253,6 +362,31 @@ async function countDemotable() {
     }
 }
 
+async function countDineInOrder() {
+    const tableElement = document.getElementById('displayGroupBy');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/count-dineinorder', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const havingTableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    havingTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -262,11 +396,12 @@ window.onload = function() {
     fetchTableData();
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
-    document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);
+    document.getElementById("deleteJournal2Table").addEventListener("submit", deleteJournal2Table);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
     document.getElementById("projectRestaurant").addEventListener("submit", projectRestaurant);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
+    document.getElementById("countDineInOrder").addEventListener("click", countDineInOrder);
 };
 
 // General function to refresh the displayed table data. 

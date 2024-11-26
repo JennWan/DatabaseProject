@@ -39,14 +39,19 @@ router.post("/insert-demotable", async (req, res) => {
     }
 });
 
-router.post("/insert-rates-table", async (req, res) => {
-    const { foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation } = req.body;
-    const insertResult = await appService.insertRatesTable(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation);
+router.post("/delete-journal2-table", async (req, res) => {
+    const { title, description } = req.body;
+    const insertResult = await appService.deleteJournal2Table(title, description);
     if (insertResult) {
         res.json({ success: true });
     } else {
         res.status(500).json({ success: false });
     }
+});
+
+router.get('/display-journal2-table', async (req, res) => {
+    const tableContent = await appService.displayJournal2Table();
+    res.json({data: tableContent});
 });
 
 router.post("/update-name-demotable", async (req, res) => {
@@ -70,6 +75,18 @@ router.get('/aggregation-having', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.post('/search', async (req, res) => {
+    const queryString = req.body.query;
+
+    try {
+        // Call the search function in appService.js
+        const results = await appService.searchRestaurant(queryString);
+        res.json(results);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to execute selection query' });
+    }
+});
+
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {
@@ -83,6 +100,11 @@ router.get('/count-demotable', async (req, res) => {
             count: tableCount
         });
     }
+});
+
+router.get('/count-dineinorder', async (req, res) => {
+    const tableContent = await appService.countDineInOrder();
+    res.json({data: tableContent});
 });
 
 
