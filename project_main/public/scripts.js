@@ -28,12 +28,12 @@ async function checkDbConnection() {
     statusElem.style.display = 'inline';
 
     response.text()
-    .then((text) => {
-        statusElem.textContent = text;
-    })
-    .catch((error) => {
-        statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
-    });
+        .then((text) => {
+            statusElem.textContent = text;
+        })
+        .catch((error) => {
+            statusElem.textContent = 'connection timed out';  // Adjust error handling if required.
+        });
 }
 
 // Fetches data from the demotable and displays it.
@@ -107,6 +107,43 @@ async function insertDemotable(event) {
     }
 }
 
+async function insertRatesTable(event) {
+    event.preventDefault();
+    const foodRatingValue = document.getElementById('insertFoodRating').value;
+    const serviceRatingValue = document.getElementById('insertServiceRating').value;
+    const affordabilityRatingValue = document.getElementById('insertAffordabilityRating').value;
+    const reviewIDValue = document.getElementById('insertReviewID').value;
+    const restaurantNameValue = document.getElementById('insertRestaurantName').value;
+    const restaurantLocationValue = document.getElementById('insertRestaurantLocation').value;
+
+
+    const response = await fetch('/insert-rates-table', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            foodRating: foodRatingValue,
+            serviceRating: serviceRatingValue,
+            affordabilityRating: affordabilityRatingValue,
+            reviewID: reviewIDValue,
+            restaurantName: restaurantNameValue,
+            restaurantLocation: restaurantLocationValue
+        })
+    });
+
+
+    const responseData = await response.json();
+    const messageElement = document.getElementById('insertRatesResultMsg');
+
+
+    if (responseData.success) {
+        messageElement.textContent = "Data inserted successfully!";
+    } else {
+        messageElement.textContent = "Error inserting data! Make sure foreign keys match.";
+    }
+}
+
 async function deleteJournal2Table(event) {
     event.preventDefault();
 
@@ -128,9 +165,10 @@ async function deleteJournal2Table(event) {
     const messageElement = document.getElementById('deleteJournal2ResultMsg');
 
     if (responseData.success) {
-        messageElement.textContent = "Data inserted successfully!";
+        messageElement.textContent = "Data deleted successfully!";
+        displayJournal2Table();
     } else {
-        messageElement.textContent = "Error inserting data! Make sure foreign keys match.";
+        messageElement.textContent = "Error deleting data! Make sure foreign keys match.";
     }
 }
 
@@ -402,6 +440,7 @@ window.onload = function() {
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
     document.getElementById("countDineInOrder").addEventListener("click", countDineInOrder);
+    document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);
 };
 
 // General function to refresh the displayed table data. 

@@ -1,3 +1,4 @@
+
 const oracledb = require('oracledb');
 const loadEnvFile = require('./utils/envUtil');
 
@@ -17,7 +18,6 @@ const dbConfig = {
 // initialize connection pool
 async function initializeConnectionPool() {
     try {
-        oracledb.initOracleClient({ libDir: process.env.ORACLE_DIR })
         await oracledb.createPool(dbConfig);
         console.log('Connection pool started');
     } catch (err) {
@@ -96,8 +96,8 @@ async function initiateDemotable() {
 
         const result = await connection.execute(`
             CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
+                                       id NUMBER PRIMARY KEY,
+                                       name VARCHAR2(20)
             )
         `);
         return true;
@@ -120,10 +120,25 @@ async function insertDemotable(id, name) {
     });
 }
 
+async function insertRatesTable(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `INSERT INTO RATES (foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation) VALUES (:foodRating, :serviceRating, :affordabilityRating, :reviewID, :restaurantName, :restaurantLocation)`,
+            [foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation],
+            { autoCommit: true }
+        );
+
+
+        return result.rowsAffected && result.rowsAffected > 0;
+    }).catch(() => {
+        return false;
+    });
+}
+
 async function deleteJournal2Table(title, description) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `DELETE FROM JOURNAL2 (title, description)  (:title, :description)`,
+            `DELETE FROM JOURNAL2 WHERE title = :title AND description = :description`,
             [title, description],
             { autoCommit: true }
         );
@@ -201,8 +216,8 @@ async function countDemotable() {
 
 async function countDineInOrder() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) AS orderCount FROM DINEINORDER GROUP BY accountID'
-    );
+        const result = await connection.execute('SELECT accountID, Count(*) AS orderCount FROM DINEINORDER GROUP BY accountID'
+        );
         return result.rows;
     }).catch(() => {
         return [];
@@ -212,9 +227,9 @@ async function countDineInOrder() {
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
-    initiateDemotable, 
-    insertDemotable, 
-    updateNameDemotable, 
+    initiateDemotable,
+    insertDemotable,
+    updateNameDemotable,
     countDemotable,
     insertRatesTable,
     projectRestaurant,

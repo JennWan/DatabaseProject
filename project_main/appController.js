@@ -39,6 +39,16 @@ router.post("/insert-demotable", async (req, res) => {
     }
 });
 
+router.post("/insert-rates-table", async (req, res) => {
+    const { foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation } = req.body;
+    const insertResult = await appService.insertRatesTable(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation);
+    if (insertResult) {
+        res.json({ success: true });
+    } else {
+        res.status(500).json({ success: false });
+    }
+});
+
 router.post("/delete-journal2-table", async (req, res) => {
     const { title, description } = req.body;
     const insertResult = await appService.deleteJournal2Table(title, description);
@@ -90,13 +100,13 @@ router.post('/search', async (req, res) => {
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {
-        res.json({ 
-            success: true,  
+        res.json({
+            success: true,
             count: tableCount
         });
     } else {
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             count: tableCount
         });
     }
