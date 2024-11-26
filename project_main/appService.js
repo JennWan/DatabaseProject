@@ -17,6 +17,7 @@ const dbConfig = {
 // initialize connection pool
 async function initializeConnectionPool() {
     try {
+        oracledb.initOracleClient({ libDir: process.env.ORACLE_DIR })
         await oracledb.createPool(dbConfig);
         console.log('Connection pool started');
     } catch (err) {
@@ -122,7 +123,7 @@ async function insertDemotable(id, name) {
 async function deleteJournal2Table(title, description) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `DELETE FROM JOURNAL2 (title, description) VALUES (:title, :description)`,
+            `DELETE FROM JOURNAL2 (title, description)  (:title, :description)`,
             [title, description],
             { autoCommit: true }
         );
@@ -164,7 +165,7 @@ async function projectRestaurant(cuisineTag, menu) {
             'SELECT * FROM Restaurant1'
         );
         return result.rows;
-    }
+    });
 }
 
 async function searchRestaurant(queryString) {
@@ -217,7 +218,7 @@ module.exports = {
     countDemotable,
     insertRatesTable,
     projectRestaurant,
-    aggregationHaving
+    aggregationHaving,
     deleteJournal2Table,
     displayJournal2Table,
     searchRestaurant,
