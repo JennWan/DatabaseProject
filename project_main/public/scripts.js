@@ -165,9 +165,10 @@ async function deleteJournal2Table(event) {
     const messageElement = document.getElementById('deleteJournal2ResultMsg');
 
     if (responseData.success) {
-        messageElement.textContent = "Data inserted successfully!";
+        messageElement.textContent = "Data deleted successfully!";
+        displayJournal2Table();
     } else {
-        messageElement.textContent = "Error inserting data! Make sure foreign keys match.";
+        messageElement.textContent = "Error deleting data! Make sure foreign keys match.";
     }
 }
 

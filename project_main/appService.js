@@ -137,7 +137,7 @@ async function insertRatesTable(foodRating, serviceRating, affordabilityRating, 
 async function deleteJournal2Table(title, description) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `DELETE FROM JOURNAL2 (title, description) VALUES (:title, :description)`,
+            `DELETE FROM JOURNAL2 WHERE title = :title AND description = :description`,
             [title, description],
             { autoCommit: true }
         );
@@ -215,7 +215,7 @@ async function countDemotable() {
 
 async function countDineInOrder() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) AS orderCount FROM DINEINORDER GROUP BY accountID'
+        const result = await connection.execute('SELECT accountID, Count(*) AS orderCount FROM DINEINORDER GROUP BY accountID'
     );
         return result.rows;
     }).catch(() => {
