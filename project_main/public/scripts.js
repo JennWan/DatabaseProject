@@ -201,6 +201,10 @@ function addSearchCondition() {
         <select name="operator[]">
             <option value="=">=</option>
             <option value="!=">!=</option>
+            <option value="<">&lt;</option>
+            <option value=">">&gt;</option>
+            <option value="<=">&lt;=</option>
+            <option value=">=">&gt;=</option>
         </select>
         <input type="text" name="value[]" placeholder="Enter value">
         <select name="logical_operator[]">
