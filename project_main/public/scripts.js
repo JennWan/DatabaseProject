@@ -400,11 +400,11 @@ async function countDemotable() {
     }
 }
 
-async function countDineInOrder() {
+async function countPickUpOrder() {
     const tableElement = document.getElementById('displayGroupBy');
     const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch('/count-dineinorder', {
+    const response = await fetch('/count-pickuporder', {
         method: 'GET'
     });
 
@@ -464,7 +464,7 @@ window.onload = function() {
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
     document.getElementById("nestedAggregation").addEventListener("click", nestedAggregation);
-    document.getElementById("countDineInOrder").addEventListener("click", countDineInOrder);
+    document.getElementById("countPickUpOrder").addEventListener("click", countPickUpOrder);
     document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);
 };
 

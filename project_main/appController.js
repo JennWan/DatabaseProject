@@ -112,8 +112,8 @@ router.get('/count-demotable', async (req, res) => {
     }
 });
 
-router.get('/count-dineinorder', async (req, res) => {
-    const tableContent = await appService.countDineInOrder();
+router.get('/count-pickuporder', async (req, res) => {
+    const tableContent = await appService.countPickUpOrder();
     res.json({data: tableContent});
 });
 
