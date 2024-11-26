@@ -157,6 +157,18 @@ async function updateNameDemotable(oldName, newName) {
     });
 }
 
+async function searchRestaurant(queryString) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT * FROM Restaurant2 WHERE ${queryString}`
+        );
+        return result.rows;  // Return the rows that match the query
+    }).catch(() => {
+        return [];
+    });
+}
+
+
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
@@ -185,5 +197,6 @@ module.exports = {
     countDemotable,
     deleteJournal2Table,
     displayJournal2Table,
+    searchRestaurant,
     countDineInOrder
 };

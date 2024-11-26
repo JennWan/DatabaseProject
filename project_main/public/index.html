@@ -98,6 +98,51 @@
 
     <br><hr><br> <!-- ========================================================================= -->
 
+    <h2>Search Restaurants</h2>
+    <form id="searchForm">
+        <div id="searchConditions">
+            <!-- Initial condition input -->
+            <div class="condition">
+                <select name="attribute[]">
+                    <option value="name">Name</option>
+                    <option value="location">Location</option>
+                    <option value="waitlistID">Waitlist ID</option>
+                </select>
+                <select name="operator[]">
+                    <option value="=">=</option>
+                    <option value="!=">!=</option>
+                    <option value="<">&lt;</option>
+                    <option value=">">&gt;</option>
+                    <option value="<=">&lt;=</option>
+                    <option value=">=">&gt;=</option>
+                </select>
+                <input type="text" name="value[]" placeholder="Enter value">
+                <select name="logical_operator[]">
+                    <option value="AND">AND</option>
+                    <option value="OR">OR</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" class="button" onclick="addSearchCondition()">Add Another Condition</button>
+        <button type="submit" class="button">Search</button>
+    </form>
+
+    <h3>Search Results</h3>
+    <table id="searchResults" border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Waitlist ID</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <br><hr><br> <!-- ========================================================================= -->
+
     <h2>Count the Tuples in DemoTable</h2>
     <button id="countDemotable"> count </button> <br><br>
     <!-- A placeholder to display the count result. -->

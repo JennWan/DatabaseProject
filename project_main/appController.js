@@ -64,6 +64,19 @@ router.post("/update-name-demotable", async (req, res) => {
     }
 });
 
+router.post('/search', async (req, res) => {
+    const queryString = req.body.query;
+
+    try {
+        // Call the search function in appService.js
+        const results = await appService.searchRestaurant(queryString);
+        res.json(results);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to execute search query' });
+    }
+});
+
+
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();
     if (tableCount >= 0) {
