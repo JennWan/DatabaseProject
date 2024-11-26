@@ -209,98 +209,103 @@
 <table id="displayRates" border="1">
     <thead>
     <tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<!--Table head, need to be adjusted accordingly to align with your own.-->
+<h2>Search Restaurants</h2>
+<form id="searchForm">
+    <div id="searchConditions">
+        <!-- Initial condition input -->
+        <div class="condition">
+            <select name="attribute[]">
+                <option value="name">Name</option>
+                <option value="location">Location</option>
+                <option value="waitlistID">Waitlist ID</option>
+            </select>
+            <select name="operator[]">
+                <option value="=">=</option>
+                <option value="!=">!=</option>
+                <option value="<">&lt;</option>
+                <option value=">">&gt;</option>
+                <option value="<=">&lt;=</option>
+                <option value=">=">&gt;=</option>
+            </select>
+            <input type="text" name="value[]" placeholder="Enter value">
+            <select name="logical_operator[]">
+                <option value="AND">AND</option>
+                <option value="OR">OR</option>
+            </select>
+        </div>
+    </div>
+
+    <button type="button" class="button" onclick="addSearchCondition()">Add Another Condition</button>
+    <button type="submit" class="button">Search</button>
+</form>
+
+<h3>Search Results</h3>
+<table id="searchResults" border="1">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Waitlist ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<br><hr><br> <!-- ========================================================================= -->
+
+<h2>Count the Tuples in DemoTable</h2>
+<button id="countDemotable"> count </button> <br><br>
+<!-- A placeholder to display the count result. -->
+<div id="countResultMsg"></div> <br>
+
+<br><hr><br> <!-- ========================================================================= -->
+
+<h2>Display the Number of Pick-up Orders Made by Each Account</h2>
+<button id="countPickUpOrder"> compute </button> <br><br>
+<!-- A placeholder to display the count result. -->
+<div id="countPickUpResultMsg"></div>
+
+<h3>Results</h3>
+<table id="displayGroupBy" border="1">
+    <thead>
+    <tr>
         <!--Table head, need to be adjusted accordingly to align with your own.-->
-        <h2>Search Restaurants</h2>
-        <form id="searchForm">
-            <div id="searchConditions">
-                <!-- Initial condition input -->
-                <div class="condition">
-                    <select name="attribute[]">
-                        <option value="name">Name</option>
-                        <option value="location">Location</option>
-                        <option value="waitlistID">Waitlist ID</option>
-                    </select>
-                    <select name="operator[]">
-                        <option value="=">=</option>
-                        <option value="!=">!=</option>
-                        <option value="<">&lt;</option>
-                        <option value=">">&gt;</option>
-                        <option value="<=">&lt;=</option>
-                        <option value=">=">&gt;=</option>
-                    </select>
-                    <input type="text" name="value[]" placeholder="Enter value">
-                    <select name="logical_operator[]">
-                        <option value="AND">AND</option>
-                        <option value="OR">OR</option>
-                    </select>
-                </div>
-            </div>
+        <th>Account ID</th>
+        <th>Order Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
 
-            <button type="button" class="button" onclick="addSearchCondition()">Add Another Condition</button>
-            <button type="submit" class="button">Search</button>
-        </form>
+<br><hr><br> <!-- ========================================================================= -->
 
-        <h3>Search Results</h3>
-        <table id="searchResults" border="1">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Location</th>
-                <th>Waitlist ID</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+<h2> Nested Aggregation with Group By </h2>
+<button type="click" id="nestedAggregation"> get data </button> <br>
+<div id="nestedAggregationResultMsg"></div>
 
-        <br><hr><br> <!-- ========================================================================= -->
+<h2>Results</h2>
+<table id="displayNested" border="1">
+    <thead>
+    <tr>
+        <!--Table head, need to be adjusted accordingly to align with your own.-->
+        <th>Account ID</th>
+        <th>Average Total Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
 
-        <h2>Count the Tuples in DemoTable</h2>
-        <button id="countDemotable"> count </button> <br><br>
-        <!-- A placeholder to display the count result. -->
-        <div id="countResultMsg"></div> <br>
-
-        <br><hr><br> <!-- ========================================================================= -->
-
-        <h2>Display the Number of Pick-up Orders Made by Each Account</h2>
-        <button id="countPickUpOrder"> compute </button> <br><br>
-        <!-- A placeholder to display the count result. -->
-        <div id="countPickUpResultMsg"></div>
-
-        <h3>Results</h3>
-        <table id="displayGroupBy" border="1">
-            <thead>
-            <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>Account ID</th>
-                <th>Order Count</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-        <br><hr><br> <!-- ========================================================================= -->
-
-        <h2> Nested Aggregation with Group By </h2>
-        <button type="click" id="nestedAggregation"> get data </button> <br>
-        <div id="nestedAggregationResultMsg"></div>
-
-        <h2>Results</h2>
-        <table id="displayNested" border="1">
-            <thead>
-            <tr>
-                <!--Table head, need to be adjusted accordingly to align with your own.-->
-                <th>Account ID</th>
-                <th>Average Total Price</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-        <!-- ===================================================================================== -->
-        <!-- External JavaScript file that contains the functionality/logic for the operations above. -->
-        <script src="scripts.js"></script>
+<!-- ===================================================================================== -->
+<!-- External JavaScript file that contains the functionality/logic for the operations above. -->
+<script src="scripts.js"></script>
 </body>
 </html>
