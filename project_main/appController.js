@@ -117,5 +117,9 @@ router.get('/count-dineinorder', async (req, res) => {
     res.json({data: tableContent});
 });
 
+router.get('/nested-aggregation', async (req, res) => {
+    const tableContent = await appService.nestedAggregation();
+    res.json({data: tableContent});
+});
 
 module.exports = router;

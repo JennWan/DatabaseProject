@@ -425,6 +425,30 @@ async function countDineInOrder() {
     });
 }
 
+async function nestedAggregation() {
+    const tableElement = document.getElementById('displayNested');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/nested-aggregation', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const nestedTableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    nestedTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
 
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
@@ -439,6 +463,7 @@ window.onload = function() {
     document.getElementById("projectRestaurant").addEventListener("submit", projectRestaurant);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
+    document.getElementById("nestedAggregation").addEventListener("click", nestedAggregation);
     document.getElementById("countDineInOrder").addEventListener("click", countDineInOrder);
     document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);
 };

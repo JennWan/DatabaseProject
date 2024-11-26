@@ -224,6 +224,17 @@ async function countDineInOrder() {
     });
 }
 
+async function nestedAggregation() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT * FROM (SELECT accountID, CAST(AVG(totalPrice) AS DECIMAL(3, 2)) AS avgTotalPrice FROM DineInOrder GROUP BY accountID) WHERE totalPrice >= 100'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -237,5 +248,6 @@ module.exports = {
     deleteJournal2Table,
     displayJournal2Table,
     searchRestaurant,
-    countDineInOrder
+    countDineInOrder,
+    nestedAggregation
 };
