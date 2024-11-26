@@ -179,7 +179,7 @@ async function projectRestaurant(cuisineTag, menu) {
             'SELECT * FROM Restaurant1'
         );
         return result.rows;
-    }
+    });
 }
 
 async function searchRestaurant(queryString) {
