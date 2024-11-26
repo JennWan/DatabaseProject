@@ -133,6 +133,16 @@ async function deleteJournal2Table(title, description) {
     });
 }
 
+async function displayJournal2Table() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM JOURNAL2'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function updateNameDemotable(oldName, newName) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -174,5 +184,6 @@ module.exports = {
     updateNameDemotable, 
     countDemotable,
     deleteJournal2Table,
+    displayJournal2Table,
     countDineInOrder
 };

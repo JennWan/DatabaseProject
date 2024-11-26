@@ -49,6 +49,11 @@ router.post("/delete-journal2-table", async (req, res) => {
     }
 });
 
+router.get('/display-journal2-table', async (req, res) => {
+    const tableContent = await appService.displayJournal2Table();
+    res.json({data: tableContent});
+});
+
 router.post("/update-name-demotable", async (req, res) => {
     const { oldName, newName } = req.body;
     const updateResult = await appService.updateNameDemotable(oldName, newName);

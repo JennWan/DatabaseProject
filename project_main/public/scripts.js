@@ -134,6 +134,31 @@ async function deleteJournal2Table(event) {
     }
 }
 
+async function displayJournal2Table() {
+    const tableElement = document.getElementById('displayJournal2');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/display-journal2-table', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const journal2Content = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    journal2Content.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // Updates names in the demotable.
 async function updateNameDemotable(event) {
     event.preventDefault();
