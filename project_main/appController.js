@@ -64,6 +64,17 @@ router.post("/update-name-demotable", async (req, res) => {
     }
 });
 
+router.get('/project-restaurant', async (req, res) => {
+    const {cuisineTag, menu} = req.body;
+    const tableContent = await appService.projectRestaurant(cuisineTag, menu);
+    res.json({data: tableContent});
+});
+
+router.get('/aggregation-having', async (req, res) => {
+    const tableContent = await appService.aggregationHaving();
+    res.json({data: tableContent});
+});
+
 router.post('/search', async (req, res) => {
     const queryString = req.body.query;
 
@@ -75,7 +86,6 @@ router.post('/search', async (req, res) => {
         res.status(500).json({ error: 'Failed to execute selection query' });
     }
 });
-
 
 router.get('/count-demotable', async (req, res) => {
     const tableCount = await appService.countDemotable();

@@ -157,6 +157,16 @@ async function updateNameDemotable(oldName, newName) {
     });
 }
 
+
+async function projectRestaurant(cuisineTag, menu) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT * FROM Restaurant1'
+        );
+        return result.rows;
+    }
+}
+
 async function searchRestaurant(queryString) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -168,6 +178,16 @@ async function searchRestaurant(queryString) {
     });
 }
 
+async function aggregationHaving() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT CAST(AVG(foodRating) AS DECIMAL(3, 2)) AS avgFoodRating, CAST(AVG(serviceRating) AS DECIMAL(3, 2)) AS avgServiceRating, CAST(AVG(affordabilityRating) AS DECIMAL(3, 2)) AS avgAffordabilityRating, restaurantName, restaurantLocation FROM Rates GROUP BY restaurantName, restaurantLocation HAVING Count(*) >= 2'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
 
 async function countDemotable() {
     return await withOracleDB(async (connection) => {
@@ -195,6 +215,9 @@ module.exports = {
     insertDemotable, 
     updateNameDemotable, 
     countDemotable,
+    insertRatesTable,
+    projectRestaurant,
+    aggregationHaving
     deleteJournal2Table,
     displayJournal2Table,
     searchRestaurant,

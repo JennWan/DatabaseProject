@@ -277,6 +277,18 @@ VALUES('4', '4', '3', '456', 'test4s name', 'test4s location');
 INSERT
 INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
 VALUES('5', '5', '5', '567', 'test5s name', 'test5s location');
+INSERT
+INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
+VALUES('3', '2', '3', '123', 'test3s name', 'test3s location');
+INSERT
+INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
+VALUES('4', '2', '1', '123', 'test4s name', 'test4s location');
+INSERT
+INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
+VALUES('2', '2', '2', '345', 'test4s name', 'test4s location');
+INSERT
+INTO Rates(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation)
+VALUES('3', '3', '5', '456', 'test3s name', 'test3s location');
 
 ALTER TABLE Rates ADD FOREIGN KEY (reviewID) REFERENCES Review1(reviewID);
 ALTER TABLE Rates ADD FOREIGN KEY (restaurantName, restaurantLocation) REFERENCES Restaurant2(name, location);

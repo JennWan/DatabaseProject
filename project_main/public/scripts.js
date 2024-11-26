@@ -128,10 +128,75 @@ async function deleteJournal2Table(event) {
     const messageElement = document.getElementById('deleteJournal2ResultMsg');
 
     if (responseData.success) {
-        messageElement.textContent = "Data deleted successfully!";
+        messageElement.textContent = "Data inserted successfully!";
     } else {
-        messageElement.textContent = "Error deleting data! Make sure the entries match.";
+        messageElement.textContent = "Error inserting data! Make sure foreign keys match.";
     }
+}
+
+// projects on the restaurant1 table
+async function projectRestaurant(event) {
+    event.preventDefault();
+
+    const cuisineTagValue = document.getElementById('projectCuisineTag');
+    const menuValue = document.getElementById('projectMenu');
+
+    // get full table
+    const response = await fetch('/project-restaurant', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const restaurantTableContent = responseData.data;
+
+    const tableElement = document.getElementById('displayRestaurant');
+    const tableBody = tableElement.querySelector('tbody');
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+    // display columns you want
+    let displayCol0 = cuisineTagValue.checked;
+    let displayCol1 = menuValue.checked;
+    restaurantTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            if (index === 0 && !displayCol0) {
+                return;
+            }
+            if (index === 1 && !displayCol1) {
+                return;
+            }
+            cell.textContent = field;
+        });
+    });
+}
+
+async function aggregationHaving() {
+    const tableElement = document.getElementById('displayHaving');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/aggregation-having', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const havingTableContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    havingTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
 }
 
 async function displayJournal2Table() {
@@ -333,7 +398,9 @@ window.onload = function() {
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("deleteJournal2Table").addEventListener("submit", deleteJournal2Table);
     document.getElementById("updataNameDemotable").addEventListener("submit", updateNameDemotable);
+    document.getElementById("projectRestaurant").addEventListener("submit", projectRestaurant);
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
+    document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
     document.getElementById("countDineInOrder").addEventListener("click", countDineInOrder);
 };
 
