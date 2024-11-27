@@ -332,7 +332,7 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     for (let i = 0; i < attributes.length; i++) {
         var attribute = attributes[i].value;
         var operator = operators[i].value;
-        var value = values[i].value;
+        var value = values[i].value.trim();
         var logicalOperator = i < logicalOperators.length ? logicalOperators[i].value : '';
 
         // Prepare the condition (e.g., "name = 'John'")
@@ -340,7 +340,7 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
 
         // Add logical operator if it's not the last condition
         if (i < attributes.length - 1) {
-            conditions.push(logicalOperator);
+            conditions.push(` ${logicalOperator} `);  // Adding space before and after the operator
         }
     }
 
@@ -365,10 +365,10 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
                 data.forEach(row => {
                     var tr = document.createElement('tr');
                     tr.innerHTML = `
-                    <td>${row.name}</td>
-                    <td>${row.location}</td>
-                    <td>${row.waitlistID}</td>
-                `;
+                <td>${row.name}</td>
+                <td>${row.location}</td>
+                <td>${row.waitlistID}</td>
+            `;
                     tableBody.appendChild(tr);
                 });
             } else {
