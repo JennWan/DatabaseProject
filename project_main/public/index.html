@@ -119,6 +119,15 @@
 </form>
 <div id="insertRatesResultMsg"></div>
 
+<h2>Show Rates Table</h2>
+<table id="displayRates" border="1">
+    <thead>
+    <tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
 <br><hr><br> <!-- ========================================================================= -->
 
 <h2> Delete Values from Journal2 Table </h2>
@@ -205,17 +214,8 @@
 
 <br><hr><br> <!-- ========================================================================= -->
 
-<h2>Show Rates Table</h2>
-<table id="displayRates" border="1">
-    <thead>
-    <tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
-
 <!--Table head, need to be adjusted accordingly to align with your own.-->
-<h2>Search Restaurants</h2>
+<h2>Search Restaurants - Selection Operation </h2>
 <form id="searchForm">
     <div id="searchConditions">
         <!-- Initial condition input -->
@@ -267,7 +267,7 @@
 
 <br><hr><br> <!-- ========================================================================= -->
 
-<h2>Display the Number of Pick-up Orders Made by Each Account</h2>
+<h2>Display the Number of Pick-up Orders Made by Each Account - Aggregation with Group By</h2>
 <button id="countPickUpOrder"> compute </button> <br><br>
 <!-- A placeholder to display the count result. -->
 <div id="countPickUpResultMsg"></div>
@@ -287,7 +287,7 @@
 
 <br><hr><br> <!-- ========================================================================= -->
 
-<h2> Nested Aggregation with Group By </h2>
+<h2> Display the Average Total Prices of Dine-in Orders that are Above $100 - Nested Aggregation with Group By </h2>
 <button type="click" id="nestedAggregation"> get data </button> <br>
 <div id="nestedAggregationResultMsg"></div>
 
