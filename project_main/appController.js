@@ -15,11 +15,6 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
-router.get('/demotable', async (req, res) => {
-    const tableContent = await appService.fetchDemotableFromDb();
-    res.json({data: tableContent});
-});
-
 router.post("/initiate-demotable", async (req, res) => {
     const initiateResult = await appService.initiateDemotable();
     if (initiateResult) {
@@ -119,6 +114,43 @@ router.get('/count-dineinorder', async (req, res) => {
 
 router.get('/nested-aggregation', async (req, res) => {
     const tableContent = await appService.nestedAggregation();
+    res.json({data: tableContent});
+});
+
+router.get('/display-Review2-table', async (req, res) => {
+    const tableContent = await appService.displayReview2Table();
+    res.json({data: tableContent});
+});
+
+router.post("/update-review2", async (req, res) => {
+    //In this relation, the user should be able to update any number of non-primary key
+    // attributes.
+    // • The application should display the tuples that are available for the relation so the
+    // user can select which tuple they want to update (based on the key).
+    const {column, oldValue, newValue, journalID} = req.body;
+
+    try {
+        const updateResult = await appService.updateReview(journalID, column, oldValue, newValue);
+        if (updateResult) {
+            return res.json({success: true});
+        } else {
+            return res.status(500).json({success: false, error: 'Database update failed'});
+        }
+    } catch (error) {
+        console.error('Error updating review:', error);
+        return res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+});
+
+router.post('/join-restaurant', async (req, res) => {
+    const { RName, RLoc } = req.body;
+    const tableContent = await appService.JoinRestaurantStaff(RName, RLoc);
+    res.json({data: tableContent});
+});
+
+router.post('/division', async (req, res) => {
+    const { RestaurantName } = req.body;
+    const tableContent = await appService.Division(RestaurantName);
     res.json({data: tableContent});
 });
 
