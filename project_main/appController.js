@@ -25,6 +25,11 @@ router.post("/insert-rates-table", async (req, res) => {
     }
 });
 
+router.get('/display-rates-table', async (req, res) => {
+    const tableContent = await appService.displayRatesTable();
+    res.json({data: tableContent});
+});
+
 router.post("/delete-journal2-table", async (req, res) => {
     const { title, description } = req.body;
     const insertResult = await appService.deleteJournal2Table(title, description);

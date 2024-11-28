@@ -68,9 +68,35 @@ async function insertRatesTable(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
+        displayRatesTable();
     } else {
         messageElement.textContent = "Error inserting data! Make sure foreign keys match or invalid characters used in input: ; = '";
     }
+}
+
+async function displayRatesTable() {
+    const tableElement = document.getElementById('displayRates');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/display-rates-table', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const ratesContent = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    ratesContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
 }
 
 async function deleteJournal2Table(event) {

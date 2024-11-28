@@ -96,6 +96,16 @@ async function insertRatesTable(foodRating, serviceRating, affordabilityRating, 
     });
 }
 
+async function displayRatesTable() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM RATES'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function deleteJournal2Table(title, description) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -286,5 +296,6 @@ module.exports = {
     Division,
     JoinRestaurantStaff,
     updateReview,
-    displayReview2Table
+    displayReview2Table,
+    displayRatesTable
 };
