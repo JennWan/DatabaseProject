@@ -209,6 +209,7 @@ async function displayReview2Table() {
 }
 
 async function updateReview(jid, column, newValue) {
+    if (!sanitizeInput(column) || !sanitizeInput(newValue)) {return false;}
     if (column === "Tags") {
         return await withOracleDB(async (connection) => {
             const result = await connection.execute(
@@ -225,20 +226,22 @@ async function updateReview(jid, column, newValue) {
             console.error('Error updating review2: ', error);
             return false;
         });
-    } else
+    } else if (column === "AccountID") {
         return await withOracleDB(async (connection) => {
             const result = await connection.execute(
                 // `CREATE VIEW temp AS UPDATE Review2 SET accountID = ${newValue} WHERE accountID = ${oldValue} AND journalID = :journalID`
                 // `UPDATE REVIEW2 SET accountID = ${newValue} WHERE accountID = ${oldValue} AND journalID = ${journalID}`
                 `UPDATE REVIEW2 SET accountID = :newValue WHERE journalID = :jid`,
                 [newValue, jid],
-                { autoCommit: true }
+                {autoCommit: true}
             );
 
             return result.rows;
-        }).catch(() => {
+        }).catch((error) => {
             return false;
         });
+    } else {
+        return false;}
 }
 
 async function JoinRestaurantStaff(name, location) {

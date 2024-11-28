@@ -409,7 +409,7 @@ async function updateReview2(event) {
     if (responseData.success) {
         messageElement.textContent = "Updated successfully!";
     } else {
-        messageElement.textContent = '${responseData.error}';
+        messageElement.textContent = `${responseData.error}`;
     }
 }
 
