@@ -1,15 +1,16 @@
-
 const oracledb = require('oracledb');
 require('dotenv').config();
+// <<<<<<<
 const loadEnvFile = require('./utils/envUtil');
 
 const envVariables = loadEnvFile('./.env');
+// >>>>>>>
 
 // Database configuration setup. Ensure your .env file has the required database credentials.
 const dbConfig = {
-    user: envVariables.ORACLE_USER,
-    password: envVariables.ORACLE_PASS,
-    connectString: `${envVariables.ORACLE_HOST}:${envVariables.ORACLE_PORT}/${envVariables.ORACLE_DBNAME}`,
+    user: process.env.ORACLE_USER,
+    password: process.env.ORACLE_PASS,
+    connectString: `${process.env.ORACLE_HOST}:${process.env.ORACLE_PORT}/${process.env.ORACLE_DBNAME}`,
     poolMin: 1,
     poolMax: 3,
     poolIncrement: 1,
@@ -19,7 +20,9 @@ const dbConfig = {
 // initialize connection pool
 async function initializeConnectionPool() {
     try {
+// <<<<<<<
         oracledb.initOracleClient({ libDir: process.env.ORACLE_DIR });
+// >>>>>>>
         await oracledb.createPool(dbConfig);
         console.log('Connection pool started');
     } catch (err) {
@@ -51,7 +54,7 @@ process
 async function withOracleDB(action) {
     let connection;
     try {
-        connection = await oracledb.getConnection(); // Gets a connection from the default pool 
+        connection = await oracledb.getConnection(); // Gets a connection from the default pool
         return await action(connection);
     } catch (err) {
         console.error(err);
@@ -253,6 +256,85 @@ async function nestedAggregation() {
     });
 }
 
+async function displayReview2Table() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM Review2'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
+async function updateReview(jid, column, oldValue, newValue) {
+    if (column === "Tags") {
+        return await withOracleDB(async (connection) => {
+            const result = await connection.execute(
+                // `CREATE Review2 SET tags = ${newValue} WHERE tags = ${oldValue} AND journalID = :journalID`
+                // `UPDATE REVIEW2 SET tags = ${newValue} WHERE tags = ${oldValue} AND journalID = ${journalID}`,
+                'UPDATE REVIEW2 SET tags = :newValue WHERE tags = :oldValue AND journalID = :jid',
+                [newValue, oldValue, jid],
+                { autoCommit: true }
+            );
+            // console.log(`UPDATE REVIEW2 SET tags = ${newValue} WHERE tags = ${oldValue} AND journalID = ${jid}`);
+
+            return result.rows;
+        }).catch((error) => {
+            console.error('Error updating review2: ', error);
+            return false;
+        });
+    } else
+        return await withOracleDB(async (connection) => {
+            const result = await connection.execute(
+                // `CREATE VIEW temp AS UPDATE Review2 SET accountID = ${newValue} WHERE accountID = ${oldValue} AND journalID = :journalID`
+                // `UPDATE REVIEW2 SET accountID = ${newValue} WHERE accountID = ${oldValue} AND journalID = ${journalID}`
+                `UPDATE REVIEW2 SET accountID = :newValue WHERE accountID = :oldValue AND journalID = :jid`,
+                [newValue, oldValue, jid],
+                { autoCommit: true }
+            );
+
+            return result.rows;
+        }).catch(() => {
+            return false;
+        });
+}
+
+async function JoinRestaurantStaff(name, location) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            'SELECT Restaurant_Staff1.staffID, Restaurant_Staff1.position FROM Restaurant_Staff1, Restaurant2 WHERE Restaurant_Staff1.restaurantName = Restaurant2.name AND Restaurant_Staff1.restaurantLocation = Restaurant2.location AND Restaurant2.name = :name AND Restaurant2.location = :location',
+            [name, location],
+            { autoCommit: true }
+        );
+
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+}
+
+async function Division(restaurantName) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT Sum(Rates.foodRating), Sum(Rates.serviceRating), Sum(Rates.affordabilityRating), Review1.restaurantName FROM Rates, Review1 WHERE Review1.restaurantName = :restaurantName AND Review1.restaurantName = Rates.restaurantName GROUP BY Review1.restaurantName`,
+            [restaurantName],
+            { autoCommit: true }
+        );
+
+        return result.rows;
+    }).catch(() => {
+        return false;
+    });
+    // -- CREATE VIEW TempResult AS
+    // -- SELECT Rates.foodRating, Rates.serviceRating, Rates.affordabilityRating, Review1.restaurantName
+    // -- FROM Rates, Review1
+    // -- WHERE NOT EXISTS ((SELECT restaurantName -- not exists restaurantName that does not match the name asked for
+    //     --                   FROM Rates) --all restaurants
+    // --                             MINUS (SELECT Review1.restaurantName
+    // --                                     FROM Review1
+    // --                                     WHERE Review1.restaurantName = 'test1s name')); --restaurantName that matches the denominator
+}
+
 module.exports = {
     testOracleConnection,
     fetchDemotableFromDb,
@@ -267,5 +349,9 @@ module.exports = {
     displayJournal2Table,
     searchRestaurant,
     countPickUpOrder,
-    nestedAggregation
+    nestedAggregation,
+    Division,
+    JoinRestaurantStaff,
+    updateReview,
+    displayReview2Table
 };

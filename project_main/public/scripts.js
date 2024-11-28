@@ -36,31 +36,31 @@ async function checkDbConnection() {
         });
 }
 
-// Fetches data from the demotable and displays it.
-async function fetchAndDisplayUsers() {
-    const tableElement = document.getElementById('demotable');
-    const tableBody = tableElement.querySelector('tbody');
-
-    const response = await fetch('/demotable', {
-        method: 'GET'
-    });
-
-    const responseData = await response.json();
-    const demotableContent = responseData.data;
-
-    // Always clear old, already fetched data before new fetching process.
-    if (tableBody) {
-        tableBody.innerHTML = '';
-    }
-
-    demotableContent.forEach(user => {
-        const row = tableBody.insertRow();
-        user.forEach((field, index) => {
-            const cell = row.insertCell(index);
-            cell.textContent = field;
-        });
-    });
-}
+// // Fetches data from the demotable and displays it.
+// async function fetchAndDisplayUsers() {
+//     const tableElement = document.getElementById('demotable');
+//     const tableBody = tableElement.querySelector('tbody');
+//
+//     const response = await fetch('/demotable', {
+//         method: 'GET'
+//     });
+//
+//     const responseData = await response.json();
+//     const demotableContent = responseData.data;
+//
+//     // Always clear old, already fetched data before new fetching process.
+//     if (tableBody) {
+//         tableBody.innerHTML = '';
+//     }
+//
+//     demotableContent.forEach(user => {
+//         const row = tableBody.insertRow();
+//         user.forEach((field, index) => {
+//             const cell = row.insertCell(index);
+//             cell.textContent = field;
+//         });
+//     });
+// }
 
 // This function resets or initializes the demotable.
 async function resetDemotable() {
@@ -72,7 +72,7 @@ async function resetDemotable() {
     if (responseData.success) {
         const messageElement = document.getElementById('resetResultMsg');
         messageElement.textContent = "demotable initiated successfully!";
-        fetchTableData();
+        // fetchTableData();
     } else {
         alert("Error initiating table!");
     }
@@ -101,7 +101,7 @@ async function insertDemotable(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
-        fetchTableData();
+        // fetchTableData();
     } else {
         messageElement.textContent = "Error inserting data!";
     }
@@ -285,7 +285,7 @@ async function updateNameDemotable(event) {
 
     if (responseData.success) {
         messageElement.textContent = "Name updated successfully!";
-        fetchTableData();
+        // fetchTableData();
     } else {
         messageElement.textContent = "Error updating name!";
     }
@@ -320,8 +320,9 @@ function addSearchCondition() {
 
 // Handle the search form submission
 document.getElementById('searchForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    event.preventDefault();  // Prevent form from submitting normally
 
+    // Collect the search parameters
     var attributes = document.querySelectorAll('[name="attribute[]"]');
     var operators = document.querySelectorAll('[name="operator[]"]');
     var values = document.querySelectorAll('[name="value[]"]');
@@ -331,22 +332,22 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     for (let i = 0; i < attributes.length; i++) {
         var attribute = attributes[i].value;
         var operator = operators[i].value;
-        var value = values[i].value.trim();
+        var value = values[i].value;
         var logicalOperator = i < logicalOperators.length ? logicalOperators[i].value : '';
 
         // Prepare the condition (e.g., "name = 'John'")
         conditions.push(`${attribute} ${operator} '${value}'`);
 
-        // Add logical operator only if it's not the last condition
+        // Add logical operator if it's not the last condition
         if (i < attributes.length - 1) {
-            conditions.push(` ${logicalOperator} `); // Space before and after operator
+            conditions.push(logicalOperator);
         }
     }
 
-    // Join the conditions with spaces and prepare the query string
+    // Join the conditions with spaces and prepare the query
     var queryString = conditions.join(' ');
 
-    // Send the query to the server
+    // Send the query to the server (use fetch to send AJAX request)
     fetch('/search', {
         method: 'POST',
         headers: {
@@ -356,6 +357,7 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     })
         .then(response => response.json())
         .then(data => {
+            // Display the results in the table
             var tableBody = document.getElementById('searchResults').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = '';  // Clear existing rows
 
@@ -380,7 +382,6 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
         });
 });
 
-
 // Counts rows in the demotable.
 // Modify the function accordingly if using different aggregate functions or procedures.
 async function countDemotable() {
@@ -399,11 +400,11 @@ async function countDemotable() {
     }
 }
 
-async function countPickUpOrder() {
+async function countDineInOrder() {
     const tableElement = document.getElementById('displayGroupBy');
     const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch('/count-pickuporder', {
+    const response = await fetch('/count-dineinorder', {
         method: 'GET'
     });
 
@@ -449,12 +450,145 @@ async function nestedAggregation() {
     });
 }
 
+async function displayReview2Table() {
+    const tableElement = document.getElementById('displayReview2');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const response = await fetch('/display-Review2-table', {
+        method: 'GET'
+    });
+
+    const responseData = await response.json();
+    const Review2Content = responseData.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    Review2Content.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Updates Tuples in Review2 Table.
+async function updateReview2(event) {
+    event.preventDefault();
+
+    const jid = document.getElementById('journalID').value;
+    const column = document.getElementById('Column').value;
+    const oldValue = document.getElementById('updateOldValue').value;
+    const newValue = document.getElementById('updateNewValue').value;
+
+    const response = await fetch('/update-review2', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            journalID: jid,
+            column: column,
+            oldValue: oldValue,
+            newValue: newValue
+        })
+    });
+    // const responseData = await response.json();
+    // const messageElement = document.getElementById('updateReviewResultMsg');
+    //
+    // if (responseData.success) {
+    //     messageElement.textContent = "Updated successfully!";
+    // } else {
+    //     messageElement.textContent = '${responseData.error}';
+    // }
+}
+
+// Restaurant2 Joins Restaurant_Staff1 Where restaurantName = name
+// AND restaurantLocation = locationTuples in Review2 Table.
+async function joinRestaurantStaff1(event) {
+    event.preventDefault();
+
+    const tableElement = document.getElementById('displayJoins');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const name = document.getElementById('name').value;
+    const location = document.getElementById('location').value;
+
+    const response = await fetch('/join-restaurant', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            RName: name, //label must match with const created with req in app controller
+            RLoc: location
+        })
+    });
+
+    const Data = await response.json();
+    const havingTableContent = Data.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    havingTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
+// Rates divided by Review1
+// See ratings by business
+async function Division(event) {
+    event.preventDefault();
+
+    const tableElement = document.getElementById('displayDivision');
+    const tableBody = tableElement.querySelector('tbody');
+
+    const name = document.getElementById('Rname').value;
+
+    const response = await fetch('/division', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            RestaurantName: name
+        })
+    });
+
+    const response_data = await response.json();
+    const havingTableContent = response_data.data;
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    havingTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
+}
+
 // ---------------------------------------------------------------
 // Initializes the webpage functionalities.
 // Add or remove event listeners based on the desired functionalities.
 window.onload = function() {
     checkDbConnection();
-    fetchTableData();
+    // fetchTableData();
+    displayReview2Table();
     document.getElementById("resetDemotable").addEventListener("click", resetDemotable);
     document.getElementById("insertDemotable").addEventListener("submit", insertDemotable);
     document.getElementById("deleteJournal2Table").addEventListener("submit", deleteJournal2Table);
@@ -463,12 +597,15 @@ window.onload = function() {
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
     document.getElementById("nestedAggregation").addEventListener("click", nestedAggregation);
-    document.getElementById("countPickUpOrder").addEventListener("click", countPickUpOrder);
+    document.getElementById("countDineInOrder").addEventListener("click", countDineInOrder);
     document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);
+    document.getElementById("updateReview2").addEventListener("submit", updateReview2);
+    document.getElementById("joinRestaurantStaff").addEventListener("submit", joinRestaurantStaff1);
+    document.getElementById("Division").addEventListener("submit", Division);
 };
 
-// General function to refresh the displayed table data. 
+// General function to refresh the displayed table data.
 // You can invoke this after any table-modifying operation to keep consistency.
-function fetchTableData() {
-    fetchAndDisplayUsers();
-}
+// function fetchTableData() {
+//     fetchAndDisplayUsers();
+// }
