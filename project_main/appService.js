@@ -148,7 +148,8 @@ async function searchRestaurant(queryString) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT * FROM Restaurant2 WHERE ${whereClause}`,
-            values  // Bind the values safely
+            values, // Bind the values safely
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
         return result.rows;  // Return rows that match the query
     }).catch(() => {
