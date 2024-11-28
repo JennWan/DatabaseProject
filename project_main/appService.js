@@ -96,6 +96,16 @@ async function insertRatesTable(foodRating, serviceRating, affordabilityRating, 
     });
 }
 
+async function displayRatesTable() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute('SELECT * FROM RATES'
+        );
+        return result.rows;
+    }).catch(() => {
+        return [];
+    });
+}
+
 async function deleteJournal2Table(title, description) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -199,37 +209,40 @@ async function displayReview2Table() {
     });
 }
 
-async function updateReview(jid, column, oldValue, newValue) {
+async function updateReview(jid, column, newValue) {
+    if (!sanitizeInput(column) || !sanitizeInput(newValue)) {return false;}
     if (column === "Tags") {
         return await withOracleDB(async (connection) => {
             const result = await connection.execute(
                 // `CREATE Review2 SET tags = ${newValue} WHERE tags = ${oldValue} AND journalID = :journalID`
                 // `UPDATE REVIEW2 SET tags = ${newValue} WHERE tags = ${oldValue} AND journalID = ${journalID}`,
-                'UPDATE REVIEW2 SET tags = :newValue WHERE tags = :oldValue AND journalID = :jid',
-                [newValue, oldValue, jid],
+                'UPDATE REVIEW2 SET tags = :newValue WHERE journalID = :jid',
+                [newValue, jid],
                 { autoCommit: true }
             );
-            // console.log("success in app service function");
 
-            return result.rows;
+
+            return result.rowsAffected;
         }).catch((error) => {
-            // console.log('Error updating review2: ', error);
+            console.error('Error updating review2: ', error);
             return false;
         });
-    } else
+    } else if (column === "AccountID") {
         return await withOracleDB(async (connection) => {
             const result = await connection.execute(
                 // `CREATE VIEW temp AS UPDATE Review2 SET accountID = ${newValue} WHERE accountID = ${oldValue} AND journalID = :journalID`
                 // `UPDATE REVIEW2 SET accountID = ${newValue} WHERE accountID = ${oldValue} AND journalID = ${journalID}`
-                `UPDATE REVIEW2 SET accountID = :newValue WHERE accountID = :oldValue AND journalID = :jid`,
-                [newValue, oldValue, jid],
-                { autoCommit: true }
+                `UPDATE REVIEW2 SET accountID = :newValue WHERE journalID = :jid`,
+                [newValue, jid],
+                {autoCommit: true}
             );
 
             return result.rows;
-        }).catch(() => {
+        }).catch((error) => {
             return false;
         });
+    } else {
+        return false;}
 }
 
 async function JoinRestaurantStaff(name, location) {
@@ -287,5 +300,6 @@ module.exports = {
     Division,
     JoinRestaurantStaff,
     updateReview,
-    displayReview2Table
+    displayReview2Table,
+    displayRatesTable
 };

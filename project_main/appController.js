@@ -25,6 +25,11 @@ router.post("/insert-rates-table", async (req, res) => {
     }
 });
 
+router.get('/display-rates-table', async (req, res) => {
+    const tableContent = await appService.displayRatesTable();
+    res.json({data: tableContent});
+});
+
 router.post("/delete-journal2-table", async (req, res) => {
     const { title, description } = req.body;
     const insertResult = await appService.deleteJournal2Table(title, description);
@@ -83,21 +88,19 @@ router.post("/update-review2", async (req, res) => {
     // attributes.
     // • The application should display the tuples that are available for the relation so the
     // user can select which tuple they want to update (based on the key).
-    const {journalID, column, oldValue, newValue} = req.body;
+    const {journalID, column, newValue} = req.body;
 
-    // try {
-        const updateResult = await appService.updateReview(journalID, column, oldValue, newValue);
+
+    try {
+        const updateResult = await appService.updateReview(journalID, column, newValue);
         if (updateResult) {
-            console.log("app controller success");
             return res.json({success: true});
         } else {
-            console.log("app controller error");
             return res.status(500).json({success: false, error: 'Database update failed'});
         }
-    // } catch (error) {
-    //     console.error('Error updating review:', error);
-    //     return res.status(500).json({ success: false, error: 'Internal server error' });
-    // }
+    } catch (error) {
+        return res.status(500).json({ success: false, error: 'Internal server error' });
+    }
 });
 
 router.post('/join-restaurant', async (req, res) => {
