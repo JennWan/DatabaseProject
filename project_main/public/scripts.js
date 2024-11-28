@@ -69,7 +69,7 @@ async function insertRatesTable(event) {
     if (responseData.success) {
         messageElement.textContent = "Data inserted successfully!";
     } else {
-        messageElement.textContent = "Error inserting data! Make sure foreign keys match.";
+        messageElement.textContent = "Error inserting data! Make sure foreign keys match or invalid characters used in input: ; = '";
     }
 }
 

@@ -20,9 +20,6 @@ const dbConfig = {
 // initialize connection pool
 async function initializeConnectionPool() {
     try {
-// <<<<<<<
-        oracledb.initOracleClient({ libDir: process.env.ORACLE_DIR });
-// >>>>>>>
         await oracledb.createPool(dbConfig);
         console.log('Connection pool started');
     } catch (err) {
@@ -83,13 +80,15 @@ async function testOracleConnection() {
 }
 
 async function insertRatesTable(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation) {
+    if (!sanitizeInput(restaurantName) || !sanitizeInput(restaurantLocation)) {
+        return false;
+    }
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `INSERT INTO RATES (foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation) VALUES (:foodRating, :serviceRating, :affordabilityRating, :reviewID, :restaurantName, :restaurantLocation)`,
             [foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation],
             { autoCommit: true }
         );
-
 
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
@@ -266,6 +265,12 @@ async function Division(restaurantName) {
     // --                             MINUS (SELECT Review1.restaurantName
     // --                                     FROM Review1
     // --                                     WHERE Review1.restaurantName = 'test1s name')); --restaurantName that matches the denominator
+}
+
+function sanitizeInput(string) {
+    if (string.includes(';') || string.includes('=') || string.includes("'"))
+        return false;
+    return true;
 }
 
 module.exports = {
