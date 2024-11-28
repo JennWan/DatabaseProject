@@ -1,7 +1,7 @@
 @echo off
 cd %~dp0
 echo Please enter the absolute path to the Oracle Instant Client directory:
-set /p oraclePath=
+set /p oraclePath=C:\Users\jenni\IdeaProjects\project_a8t6b_b7a5y_f9p0l\instantclient_19_20
 
 :: Construct the local start script
 (
