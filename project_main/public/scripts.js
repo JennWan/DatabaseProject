@@ -320,9 +320,8 @@ function addSearchCondition() {
 
 // Handle the search form submission
 document.getElementById('searchForm').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent form from submitting normally
+    event.preventDefault();
 
-    // Collect the search parameters
     var attributes = document.querySelectorAll('[name="attribute[]"]');
     var operators = document.querySelectorAll('[name="operator[]"]');
     var values = document.querySelectorAll('[name="value[]"]');
@@ -338,16 +337,16 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
         // Prepare the condition (e.g., "name = 'John'")
         conditions.push(`${attribute} ${operator} '${value}'`);
 
-        // Add logical operator if it's not the last condition
+        // Add logical operator only if it's not the last condition
         if (i < attributes.length - 1) {
-            conditions.push(` ${logicalOperator} `);  // Adding space before and after the operator
+            conditions.push(` ${logicalOperator} `); // Space before and after operator
         }
     }
 
-    // Join the conditions with spaces and prepare the query
+    // Join the conditions with spaces and prepare the query string
     var queryString = conditions.join(' ');
 
-    // Send the query to the server (use fetch to send AJAX request)
+    // Send the query to the server
     fetch('/search', {
         method: 'POST',
         headers: {
@@ -357,7 +356,6 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     })
         .then(response => response.json())
         .then(data => {
-            // Display the results in the table
             var tableBody = document.getElementById('searchResults').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = '';  // Clear existing rows
 
@@ -365,10 +363,10 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
                 data.forEach(row => {
                     var tr = document.createElement('tr');
                     tr.innerHTML = `
-                <td>${row.name}</td>
-                <td>${row.location}</td>
-                <td>${row.waitlistID}</td>
-            `;
+                    <td>${row.name}</td>
+                    <td>${row.location}</td>
+                    <td>${row.waitlistID}</td>
+                `;
                     tableBody.appendChild(tr);
                 });
             } else {
@@ -381,6 +379,7 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
             console.error('Error:', error);
         });
 });
+
 
 // Counts rows in the demotable.
 // Modify the function accordingly if using different aggregate functions or procedures.

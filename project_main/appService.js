@@ -1,5 +1,6 @@
 
 const oracledb = require('oracledb');
+require('dotenv').config();
 const loadEnvFile = require('./utils/envUtil');
 
 const envVariables = loadEnvFile('./.env');
@@ -18,6 +19,7 @@ const dbConfig = {
 // initialize connection pool
 async function initializeConnectionPool() {
     try {
+        oracledb.initOracleClient({ libDir: process.env.ORACLE_DIR });
         await oracledb.createPool(dbConfig);
         console.log('Connection pool started');
     } catch (err) {
@@ -184,27 +186,27 @@ async function projectRestaurant(cuisineTag, menu) {
 }
 
 async function searchRestaurant(queryString) {
-    // Split the query string into conditions and values
     const conditions = [];
     const values = [];
 
-    // Extract conditions and values from the query string
+    // Extract conditions and values from the query string using a regular expression
     const regex = /(\w+)\s*(=|!=|<|>|<=|>=)\s*'([^']+)'/g;
     let match;
     while ((match = regex.exec(queryString)) !== null) {
-        conditions.push(`${match[1]} ${match[2]} ?`);
+        conditions.push(`${match[1]} ${match[2]} ?`); // Prepared statement placeholder
         values.push(match[3]);  // Collect the value (i.e., the value inside the quotes)
     }
 
     // Join the conditions with space (AND/OR) operators
     const whereClause = conditions.join(' ');
 
+    // Execute query using the Oracle DB connection
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT * FROM Restaurant2 WHERE ${whereClause}`,
-            values  // Pass the values as parameters
+            values  // Bind the values safely
         );
-        return result.rows;  // Return the rows that match the query
+        return result.rows;  // Return rows that match the query
     }).catch(() => {
         return [];
     });
