@@ -390,7 +390,6 @@ async function updateReview2(event) {
 
     const jid = document.getElementById('journalID').value;
     const column = document.getElementById('Column').value;
-    const oldValue = document.getElementById('updateOldValue').value;
     const newValue = document.getElementById('updateNewValue').value;
 
     const response = await fetch('/update-review2', {
@@ -401,7 +400,6 @@ async function updateReview2(event) {
         body: JSON.stringify({
             journalID: jid,
             column: column,
-            oldValue: oldValue,
             newValue: newValue
         })
     });

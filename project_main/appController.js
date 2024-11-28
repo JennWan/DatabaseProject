@@ -88,11 +88,11 @@ router.post("/update-review2", async (req, res) => {
     // attributes.
     // • The application should display the tuples that are available for the relation so the
     // user can select which tuple they want to update (based on the key).
-    const {journalID, column, oldValue, newValue} = req.body;
+    const {journalID, column, newValue} = req.body;
 
 
     try {
-        const updateResult = await appService.updateReview(journalID, column, oldValue, newValue);
+        const updateResult = await appService.updateReview(journalID, column, newValue);
         if (updateResult) {
             return res.json({success: true});
         } else {

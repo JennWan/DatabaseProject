@@ -208,7 +208,7 @@ async function displayReview2Table() {
     });
 }
 
-async function updateReview(jid, column, oldValue, newValue) {
+async function updateReview(jid, column, newValue) {
     if (column === "Tags") {
         return await withOracleDB(async (connection) => {
             const result = await connection.execute(
@@ -230,8 +230,8 @@ async function updateReview(jid, column, oldValue, newValue) {
             const result = await connection.execute(
                 // `CREATE VIEW temp AS UPDATE Review2 SET accountID = ${newValue} WHERE accountID = ${oldValue} AND journalID = :journalID`
                 // `UPDATE REVIEW2 SET accountID = ${newValue} WHERE accountID = ${oldValue} AND journalID = ${journalID}`
-                `UPDATE REVIEW2 SET accountID = :newValue WHERE accountID = :oldValue AND journalID = :jid`,
-                [newValue, oldValue, jid],
+                `UPDATE REVIEW2 SET accountID = :newValue WHERE journalID = :jid`,
+                [newValue, jid],
                 { autoCommit: true }
             );
 
