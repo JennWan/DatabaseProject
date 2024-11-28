@@ -209,11 +209,11 @@ async function updateReview(jid, column, oldValue, newValue) {
                 [newValue, oldValue, jid],
                 { autoCommit: true }
             );
-            // console.log(`UPDATE REVIEW2 SET tags = ${newValue} WHERE tags = ${oldValue} AND journalID = ${jid}`);
+            // console.log("success in app service function");
 
             return result.rows;
         }).catch((error) => {
-            console.error('Error updating review2: ', error);
+            // console.log('Error updating review2: ', error);
             return false;
         });
     } else
@@ -248,7 +248,7 @@ async function JoinRestaurantStaff(name, location) {
 
 async function Division(restaurantName) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
+        const result = await connection.execute(//change to return accounts that has reviewed all restaurants
             `SELECT Sum(Rates.foodRating), Sum(Rates.serviceRating), Sum(Rates.affordabilityRating), Review1.restaurantName FROM Rates, Review1 WHERE Review1.restaurantName = :restaurantName AND Review1.restaurantName = Rates.restaurantName GROUP BY Review1.restaurantName`,
             [restaurantName],
             { autoCommit: true }
