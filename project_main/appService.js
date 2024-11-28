@@ -214,15 +214,15 @@ async function updateReview(jid, column, oldValue, newValue) {
             const result = await connection.execute(
                 // `CREATE Review2 SET tags = ${newValue} WHERE tags = ${oldValue} AND journalID = :journalID`
                 // `UPDATE REVIEW2 SET tags = ${newValue} WHERE tags = ${oldValue} AND journalID = ${journalID}`,
-                'UPDATE REVIEW2 SET tags = :newValue WHERE tags = :oldValue AND journalID = :jid',
-                [newValue, oldValue, jid],
+                'UPDATE REVIEW2 SET tags = :newValue WHERE journalID = :jid',
+                [newValue, jid],
                 { autoCommit: true }
             );
-            // console.log("success in app service function");
 
-            return result.rows;
+
+            return result.rowsAffected;
         }).catch((error) => {
-            // console.log('Error updating review2: ', error);
+            console.error('Error updating review2: ', error);
             return false;
         });
     } else

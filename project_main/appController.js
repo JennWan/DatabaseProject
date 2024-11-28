@@ -90,19 +90,17 @@ router.post("/update-review2", async (req, res) => {
     // user can select which tuple they want to update (based on the key).
     const {journalID, column, oldValue, newValue} = req.body;
 
-    // try {
+
+    try {
         const updateResult = await appService.updateReview(journalID, column, oldValue, newValue);
         if (updateResult) {
-            console.log("app controller success");
             return res.json({success: true});
         } else {
-            console.log("app controller error");
             return res.status(500).json({success: false, error: 'Database update failed'});
         }
-    // } catch (error) {
-    //     console.error('Error updating review:', error);
-    //     return res.status(500).json({ success: false, error: 'Internal server error' });
-    // }
+    } catch (error) {
+        return res.status(500).json({ success: false, error: 'Internal server error' });
+    }
 });
 
 router.post('/join-restaurant', async (req, res) => {

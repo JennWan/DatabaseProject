@@ -409,9 +409,9 @@ async function updateReview2(event) {
     const messageElement = document.getElementById('updateReviewResultMsg');
 
     if (responseData.success) {
-        // messageElement.textContent = "Updated successfully!";
+        messageElement.textContent = "Updated successfully!";
     } else {
-        // messageElement.textContent = '${responseData.error}';
+        messageElement.textContent = '${responseData.error}';
     }
 }
 
