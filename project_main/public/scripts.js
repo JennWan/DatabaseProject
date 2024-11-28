@@ -320,9 +320,8 @@ function addSearchCondition() {
 
 // Handle the search form submission
 document.getElementById('searchForm').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent form from submitting normally
+    event.preventDefault();
 
-    // Collect the search parameters
     var attributes = document.querySelectorAll('[name="attribute[]"]');
     var operators = document.querySelectorAll('[name="operator[]"]');
     var values = document.querySelectorAll('[name="value[]"]');
@@ -332,22 +331,22 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     for (let i = 0; i < attributes.length; i++) {
         var attribute = attributes[i].value;
         var operator = operators[i].value;
-        var value = values[i].value;
+        var value = values[i].value.trim();
         var logicalOperator = i < logicalOperators.length ? logicalOperators[i].value : '';
 
         // Prepare the condition (e.g., "name = 'John'")
         conditions.push(`${attribute} ${operator} '${value}'`);
 
-        // Add logical operator if it's not the last condition
+        // Add logical operator only if it's not the last condition
         if (i < attributes.length - 1) {
-            conditions.push(logicalOperator);
+            conditions.push(` ${logicalOperator} `); // Space before and after operator
         }
     }
 
-    // Join the conditions with spaces and prepare the query
+    // Join the conditions with spaces and prepare the query string
     var queryString = conditions.join(' ');
 
-    // Send the query to the server (use fetch to send AJAX request)
+    // Send the query to the server
     fetch('/search', {
         method: 'POST',
         headers: {
@@ -357,7 +356,6 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
     })
         .then(response => response.json())
         .then(data => {
-            // Display the results in the table
             var tableBody = document.getElementById('searchResults').getElementsByTagName('tbody')[0];
             tableBody.innerHTML = '';  // Clear existing rows
 
@@ -382,6 +380,7 @@ document.getElementById('searchForm').addEventListener('submit', function(event)
         });
 });
 
+
 // Counts rows in the demotable.
 // Modify the function accordingly if using different aggregate functions or procedures.
 async function countDemotable() {
@@ -400,11 +399,11 @@ async function countDemotable() {
     }
 }
 
-async function countDineInOrder() {
+async function countPickUpOrder() {
     const tableElement = document.getElementById('displayGroupBy');
     const tableBody = tableElement.querySelector('tbody');
 
-    const response = await fetch('/count-dineinorder', {
+    const response = await fetch('/count-pickuporder', {
         method: 'GET'
     });
 
@@ -464,7 +463,7 @@ window.onload = function() {
     document.getElementById("countDemotable").addEventListener("click", countDemotable);
     document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
     document.getElementById("nestedAggregation").addEventListener("click", nestedAggregation);
-    document.getElementById("countDineInOrder").addEventListener("click", countDineInOrder);
+    document.getElementById("countPickUpOrder").addEventListener("click", countPickUpOrder);
     document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);
 };
 
