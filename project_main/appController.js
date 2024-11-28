@@ -15,30 +15,6 @@ router.get('/check-db-connection', async (req, res) => {
     }
 });
 
-router.get('/demotable', async (req, res) => {
-    const tableContent = await appService.fetchDemotableFromDb();
-    res.json({data: tableContent});
-});
-
-router.post("/initiate-demotable", async (req, res) => {
-    const initiateResult = await appService.initiateDemotable();
-    if (initiateResult) {
-        res.json({ success: true });
-    } else {
-        res.status(500).json({ success: false });
-    }
-});
-
-router.post("/insert-demotable", async (req, res) => {
-    const { id, name } = req.body;
-    const insertResult = await appService.insertDemotable(id, name);
-    if (insertResult) {
-        res.json({ success: true });
-    } else {
-        res.status(500).json({ success: false });
-    }
-});
-
 router.post("/insert-rates-table", async (req, res) => {
     const { foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation } = req.body;
     const insertResult = await appService.insertRatesTable(foodRating, serviceRating, affordabilityRating, reviewID, restaurantName, restaurantLocation);
@@ -64,16 +40,6 @@ router.get('/display-journal2-table', async (req, res) => {
     res.json({data: tableContent});
 });
 
-router.post("/update-name-demotable", async (req, res) => {
-    const { oldName, newName } = req.body;
-    const updateResult = await appService.updateNameDemotable(oldName, newName);
-    if (updateResult) {
-        res.json({ success: true });
-    } else {
-        res.status(500).json({ success: false });
-    }
-});
-
 router.get('/project-restaurant', async (req, res) => {
     const {cuisineTag, menu} = req.body;
     const tableContent = await appService.projectRestaurant(cuisineTag, menu);
@@ -97,21 +63,6 @@ router.post('/search', async (req, res) => {
     }
 });
 
-router.get('/count-demotable', async (req, res) => {
-    const tableCount = await appService.countDemotable();
-    if (tableCount >= 0) {
-        res.json({
-            success: true,
-            count: tableCount
-        });
-    } else {
-        res.status(500).json({
-            success: false,
-            count: tableCount
-        });
-    }
-});
-
 router.get('/count-pickuporder', async (req, res) => {
     const tableContent = await appService.countPickUpOrder();
     res.json({data: tableContent});
@@ -119,6 +70,45 @@ router.get('/count-pickuporder', async (req, res) => {
 
 router.get('/nested-aggregation', async (req, res) => {
     const tableContent = await appService.nestedAggregation();
+    res.json({data: tableContent});
+});
+
+router.get('/display-Review2-table', async (req, res) => {
+    const tableContent = await appService.displayReview2Table();
+    res.json({data: tableContent});
+});
+
+router.post("/update-review2", async (req, res) => {
+    //In this relation, the user should be able to update any number of non-primary key
+    // attributes.
+    // • The application should display the tuples that are available for the relation so the
+    // user can select which tuple they want to update (based on the key).
+    const {journalID, column, oldValue, newValue} = req.body;
+
+    // try {
+        const updateResult = await appService.updateReview(journalID, column, oldValue, newValue);
+        if (updateResult) {
+            console.log("app controller success");
+            return res.json({success: true});
+        } else {
+            console.log("app controller error");
+            return res.status(500).json({success: false, error: 'Database update failed'});
+        }
+    // } catch (error) {
+    //     console.error('Error updating review:', error);
+    //     return res.status(500).json({ success: false, error: 'Internal server error' });
+    // }
+});
+
+router.post('/join-restaurant', async (req, res) => {
+    const { RName, RLoc } = req.body;
+    const tableContent = await appService.JoinRestaurantStaff(RName, RLoc);
+    res.json({data: tableContent});
+});
+
+router.post('/division', async (req, res) => {
+    const { RestaurantName } = req.body;
+    const tableContent = await appService.Division(RestaurantName);
     res.json({data: tableContent});
 });
 
