@@ -221,7 +221,8 @@ async function aggregationHaving() {
 
 async function countPickUpOrder() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT accountID, Count(*) AS orderCount FROM PICKUPORDER GROUP BY accountID'
+        const result = await connection.execute(
+            'SELECT accountID, Count(*) AS orderCount FROM PICKUPORDER GROUP BY accountID'
         );
         return result.rows;
     }).catch(() => {
