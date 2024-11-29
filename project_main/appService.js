@@ -307,14 +307,13 @@ async function Division() {
         const result = await connection.execute(
             `SELECT Account2.accountID
              FROM Account2
-             WHERE NOT EXISTS (SELECT *
-                  FROM (SELECT DISTINCT accountID
-                        FROM ((SELECT DISTINCT journal1.accountID, Review1.restaurantName
-                               FROM Review1, Journal1)
-                              MINUS (SELECT Review2.accountID, Review1.restaurantName
-                                     FROM Review1, Review2
-                                     WHERE Review2.JournalID = Review1.JournalID))) TempResult
-                  WHERE TempResult.accountID = Account2.accountID)`
+             WHERE NOT EXISTS (SELECT accountID
+                               FROM ((SELECT DISTINCT journal1.accountID, Review1.restaurantName
+                                      FROM Review1, Journal1)
+                                      MINUS (SELECT Review2.accountID, Review1.restaurantName
+                                             FROM Review1, Review2
+                                             WHERE Review2.JournalID = Review1.JournalID)) TempResult
+                               WHERE TempResult.accountID = Account2.accountID)`
         );
 
         return result.rows;
