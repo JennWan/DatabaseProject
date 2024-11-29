@@ -223,12 +223,12 @@ function parseConditions(conditions) {
 }
 
 async function searchRestaurant(conditions) {
-    if (!parseConditions(conditions)) {
-        return [];
-    }
+    // if (!parseConditions(conditions)) {
+    //     return [];
+    // }
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT * FROM Restaurant2 WHERE :conditions`
+            `SELECT * FROM Restaurant2 ${conditions ? `WHERE ${conditions}` : ""}`
         );
         return result.rows;
     }).catch(() => {

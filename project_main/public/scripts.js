@@ -312,6 +312,8 @@ async function searchRestaurant(event) {
     event.preventDefault();
 
     const conditionsValue = document.getElementById('insertConditions').value;
+    const tableElement = document.getElementById('searchResults');
+    const tableBody = tableElement.querySelector('tbody');
 
     const response = await fetch('/search', {
         method: 'POST',
@@ -324,13 +326,29 @@ async function searchRestaurant(event) {
     });
 
     const responseData = await response.json();
+    const havingTableContent = responseData.data;
     const messageElement = document.getElementById('searchRestaurantMsg');
+
+    console.log(responseData);
 
     if (responseData.success) {
         messageElement.textContent = "Searched successfully!";
     } else {
         messageElement.textContent = "Error searching data! Make sure you have inputted valid conditions.";
     }
+
+    // Always clear old, already fetched data before new fetching process.
+    if (tableBody) {
+        tableBody.innerHTML = '';
+    }
+
+    havingTableContent.forEach(user => {
+        const row = tableBody.insertRow();
+        user.forEach((field, index) => {
+            const cell = row.insertCell(index);
+            cell.textContent = field;
+        });
+    });
 }
 
 async function countDineInOrder() {
