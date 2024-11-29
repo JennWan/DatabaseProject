@@ -57,14 +57,19 @@ router.get('/aggregation-having', async (req, res) => {
 });
 
 router.post('/search', async (req, res) => {
-    const queryString = req.body.query;
-
-    try {
-        // Call the search function in appService.js
-        const results = await appService.searchRestaurant(queryString);
-        res.json(results);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to execute selection query' });
+    const conditions = req.body;
+    // try {
+    //     // Call the search function in appService.js
+    //     const results = await appService.searchRestaurant(queryString);
+    //     res.json(results);
+    // } catch (error) {
+    //     res.status(500).json({ error: 'Failed to execute selection query' });
+    // }
+    const tableContent = await appService.searchRestaurant(conditions);
+    if (tableContent) {
+        res.json({ success: true , data: tableContent});
+    } else {
+        res.status(500).json({ success: false });
     }
 });
 

@@ -232,33 +232,41 @@
 
 <div id="searchTab" class="tab-content">
     <h2> 2.1.4 Search Restaurants - Selection Operation </h2>
-    <form id="searchForm">
-        <div id="searchConditions">
-            <!-- Initial condition input -->
-            <div class="condition">
-                <select name="attribute[]">
-                    <option value="name">Name</option>
-                    <option value="location">Location</option>
-                    <option value="waitlistID">Waitlist ID</option>
-                </select>
-                <select name="operator[]">
-                    <option value="=">=</option>
-                    <option value="!=">!=</option>
-                    <option value="<">&lt;</option>
-                    <option value=">">&gt;</option>
-                    <option value="<=">&lt;=</option>
-                    <option value=">=">&gt;=</option>
-                </select>
-                <input type="text" name="value[]" placeholder="Enter value">
-                <select name="logical_operator[]">
-                    <option value="AND">AND</option>
-                    <option value="OR">OR</option>
-                </select>
-            </div>
-        </div>
+<!--    <form id="searchForm">-->
+<!--        <div id="searchConditions">-->
+<!--            &lt;!&ndash; Initial condition input &ndash;&gt;-->
+<!--            <div class="condition">-->
+<!--                <select name="attribute[]">-->
+<!--                    <option value="name">Name</option>-->
+<!--                    <option value="location">Location</option>-->
+<!--                    <option value="waitlistID">Waitlist ID</option>-->
+<!--                </select>-->
+<!--                <select name="operator[]">-->
+<!--                    <option value="=">=</option>-->
+<!--                    <option value="!=">!=</option>-->
+<!--                    <option value="<">&lt;</option>-->
+<!--                    <option value=">">&gt;</option>-->
+<!--                    <option value="<=">&lt;=</option>-->
+<!--                    <option value=">=">&gt;=</option>-->
+<!--                </select>-->
+<!--                <input type="text" name="value[]" placeholder="Enter value">-->
+<!--                <select name="logical_operator[]">-->
+<!--                    <option value="AND">AND</option>-->
+<!--                    <option value="OR">OR</option>-->
+<!--                </select>-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <button type="button" class="button" onclick="addSearchCondition()">Add Another Condition</button>
-        <button type="submit" class="button">Search</button>
+<!--        <button type="button" class="button" onclick="addSearchCondition()">Add Another Condition</button>-->
+<!--        <button type="submit" class="button">Search</button>-->
+<!--    </form>-->
+    <p>User enters a string specifying the conditions. For example, if the relation contained attributes firstName and lastName, the user could enter an arbitrarily long string like “firstName = ‘Ada’ OR firstName = ‘Alan’ OR lastName = ‘Hamilton’ </p>
+    <p>Valid operators: =, !=, >, >=, <, <=</p>
+    <p>Valid logical operators: AND, OR</p>
+    <p>The values are case-sensitive and if you input the wrong case, the search will not do anything.</p>
+    <form id="searchForm">
+        Selection Conditions: <input type="text" id="insertConditions" placeholder="Enter conditions" required> <br><br>
+        <button name = "searchRestaurant" type="submit" class="button">Search</button> <br>
     </form>
 
     <h3>Search Results</h3>
