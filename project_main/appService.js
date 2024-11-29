@@ -139,34 +139,6 @@ async function projectRestaurant(cuisineTag, menu) {
     });
 }
 
-// async function searchRestaurant(queryString) {
-//     const conditions = [];
-//     const values = [];
-//
-//     // Extract conditions and values from the query string using a regular expression
-//     const regex = /(\w+)\s*(=|!=|<|>|<=|>=)\s*'([^']+)'/g;
-//     let match;
-//     while ((match = regex.exec(queryString)) !== null) {
-//         conditions.push(`${match[1]} ${match[2]} ?`); // Prepared statement placeholder
-//         values.push(match[3]);  // Collect the value (i.e., the value inside the quotes)
-//     }
-//
-//     // Join the conditions with space (AND/OR) operators
-//     const whereClause = conditions.join(' ');
-//
-//     // Execute query using the Oracle DB connection
-//     return await withOracleDB(async (connection) => {
-//         const result = await connection.execute(
-//             `SELECT * FROM Restaurant2 WHERE ${whereClause}`,
-//             values, // Bind the values safely
-//             { outFormat: oracledb.OUT_FORMAT_OBJECT }
-//         );
-//         return result.rows;  // Return rows that match the query
-//     }).catch(() => {
-//         return [];
-//     });
-// }
-
 function parseConditions(conditions) {
     const allowedAttributes = [
         'name',
