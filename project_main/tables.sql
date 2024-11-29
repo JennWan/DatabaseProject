@@ -357,7 +357,7 @@ INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, r
 VALUES ('90007', '16', '7011', '0003', 'test2s name', 'test2s location');
 INSERT
 INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, restaurantLocation)
-VALUES ('90008', '38', '7012', '0002', 'test3s name', 'test3s location');
+VALUES ('90008', '38', '7012', '0003', 'test3s name', 'test3s location');
 INSERT
 INTO PickUpOrder(orderID, totalPrice, pickupNumber, accountID, restaurantName, restaurantLocation)
 VALUES ('90009', '80', '7013', '0004', 'test4s name', 'test4s location');
