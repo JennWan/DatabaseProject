@@ -172,11 +172,60 @@ function parseConditions(conditions) {
         'name',
         'location',
         'waitlistID'
-    ]
-    const allowedComparison = ['>', '<', '<=', '']
+    ];
+    const allowedComparison = ['>', '<', '<=', '=', '<>', 'LIKE'];
+    const allowedSeparators = ['(', ')', 'AND', 'OR', 'NOT'];
+    if (conditions.trim() == "") {
+        console.log("Condition cannot be empty");
+        return false;
+    }
+    const splitStrings = conditions.split(/\s*(?:AND|OR|NOT|\(|\))\s*/).filter(str => str.trim() !== "");
+    for (let string of splitStrings) {
+        string = string.trim();
+        const regexAttrCompValue = /^(\w+)\s*(>|>=|<=|=|<>|LIKE)\s*(.*)$/;
+        const match = string.match(regexAttrCompValue);
+        if (match) {
+            const attribute = match[1].toLowerCase();
+            if (allowedAttributes.includes(attribute)) {
+                const parameter = match[3];
+                if (parameter.trim() === "") {
+                    console.log("Unrecognized input, value cannot be empty!");
+                    return false;
+                }
+                const regexComments = /;|--|\/*|\*\//;
+                if (regexComments.test(parameter)) {
+                    console.log("Unrecognized input, value cannot contain comment flags!");
+                    return false;
+                }
+                const regexQuotes = /'.*'/;
+                const unescapedQuotes = /'.*(?<!\\)(?:\\{2})*'.*'/;
+                if (!regexQuotes.test(parameter)) {
+                    console.log("Unrecognized input, non-numerical values have to be wrapped in 'quotes'!");
+                    return false;
+                }
+                else if (unescapedQuotes.test(parameter)) {
+                    console.log("Unrecognized input, text value has unescaped quotes in the middle!");
+                    return false;
+                }
+            }
+            else {
+                console.log("Unrecognized input, attribute not recognized!");
+                return false;
+            }
+        }
+        else {
+            console.log("Unrecognized input, did not match allowed patterns!");
+            return false;
+        }
+    }
+    console.log("Executing query.");
+    return true;
 }
 
 async function searchRestaurant(conditions) {
+    if (!parseConditions(conditions)) {
+        return [];
+    }
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT * FROM Restaurant2 WHERE :conditions`

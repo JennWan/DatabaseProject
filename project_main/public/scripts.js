@@ -523,7 +523,7 @@ window.onload = function() {
     document.getElementById("deleteJournal2Table").addEventListener("submit", deleteJournal2Table);
     document.getElementById("projectRestaurant").addEventListener("submit", projectRestaurant);
     document.getElementById("havingAggregation").addEventListener("click", aggregationHaving);
-    // document.getElementById("searchRestaurant").addEventListener("click", searchRestaurant);
+    document.getElementById("searchRestaurant").addEventListener("click", searchRestaurant);
     document.getElementById("nestedAggregation").addEventListener("click", nestedAggregation);
     document.getElementById("countPickUpOrder").addEventListener("click", countDineInOrder);
     document.getElementById("insertRatesTable").addEventListener("submit", insertRatesTable);

@@ -260,14 +260,15 @@
 <!--        <button type="button" class="button" onclick="addSearchCondition()">Add Another Condition</button>-->
 <!--        <button type="submit" class="button">Search</button>-->
 <!--    </form>-->
-    <p>User enters a string specifying the conditions. For example, if the relation contained attributes firstName and lastName, the user could enter an arbitrarily long string like “firstName = ‘Ada’ OR firstName = ‘Alan’ OR lastName = ‘Hamilton’ </p>
-    <p>Valid operators: =, !=, >, >=, <, <=</p>
+    <p>User enters a string specifying the conditions. For example, our relation contained attributes name, location, and waitlistID, so the user could enter an arbitrarily long string like “name = ‘test1’ OR name = ‘test2’ OR waitlistID = ‘1' </p>
+    <p>Valid operators: =, <>, >, >=, <, <=, LIKE</p>
     <p>Valid logical operators: AND, OR</p>
     <p>The values are case-sensitive and if you input the wrong case, the search will not do anything.</p>
     <form id="searchForm">
         Selection Conditions: <input type="text" id="insertConditions" placeholder="Enter conditions" required> <br><br>
-        <button name = "searchRestaurant" type="submit" class="button">Search</button> <br>
+        <button id = "searchRestaurant" type="submit" class="button">Search</button> <br>
     </form>
+    <div id="searchRestaurantMsg"></div>
 
     <h3>Search Results</h3>
     <table id="searchResults" border="1">

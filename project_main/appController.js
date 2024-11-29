@@ -56,20 +56,29 @@ router.get('/aggregation-having', async (req, res) => {
     res.json({data: tableContent});
 });
 
+// router.post('/search', async (req, res) => {
+//     const tableContent = await appService.searchRestaurant(conditions);
+//     res.json({data: tableContent});
+// });
 router.post('/search', async (req, res) => {
-    const conditions = req.body;
-    // try {
-    //     // Call the search function in appService.js
-    //     const results = await appService.searchRestaurant(queryString);
-    //     res.json(results);
-    // } catch (error) {
-    //     res.status(500).json({ error: 'Failed to execute selection query' });
-    // }
-    const tableContent = await appService.searchRestaurant(conditions);
-    if (tableContent) {
-        res.json({ success: true , data: tableContent});
-    } else {
-        res.status(500).json({ success: false });
+    try {
+        const conditions = req.body.conditions;  // Accessing the correct property
+
+        if (!conditions) {
+            return res.status(400).json({ success: false, message: 'Conditions are required.' });
+        }
+
+        // Assuming you have a function that safely handles the conditions and queries the DB
+        const tableContent = await appService.searchRestaurant(conditions);
+
+        if (tableContent.length === 0) {
+            return res.status(404).json({ success: false, message: 'No data found matching the conditions.' });
+        }
+
+        res.json({ success: true, data: tableContent });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'An error occurred while searching.' });
     }
 });
 
