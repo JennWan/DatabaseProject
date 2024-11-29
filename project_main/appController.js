@@ -123,9 +123,8 @@ router.post('/join-restaurant', async (req, res) => {
     res.json({data: tableContent});
 });
 
-router.post('/division', async (req, res) => {
-    const { RestaurantName } = req.body;
-    const tableContent = await appService.Division(RestaurantName);
+router.get('/division', async (req, res) => {
+    const tableContent = await appService.Division();
     res.json({data: tableContent});
 });
 

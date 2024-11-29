@@ -288,6 +288,7 @@ async function updateReview(jid, column, newValue) {
 }
 
 async function JoinRestaurantStaff(name, location) {
+    if (!sanitizeInput(name) || !sanitizeInput(location)) {return false;}
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             'SELECT Restaurant_Staff1.staffID, Restaurant_Staff1.position FROM Restaurant_Staff1, Restaurant2 WHERE Restaurant_Staff1.restaurantName = Restaurant2.name AND Restaurant_Staff1.restaurantLocation = Restaurant2.location AND Restaurant2.name = :name AND Restaurant2.location = :location',
@@ -301,26 +302,25 @@ async function JoinRestaurantStaff(name, location) {
     });
 }
 
-async function Division(restaurantName) {
+async function Division() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(//change to return accounts that has reviewed all restaurants
-            `SELECT Sum(Rates.foodRating), Sum(Rates.serviceRating), Sum(Rates.affordabilityRating), Review1.restaurantName FROM Rates, Review1 WHERE Review1.restaurantName = :restaurantName AND Review1.restaurantName = Rates.restaurantName GROUP BY Review1.restaurantName`,
-            [restaurantName],
-            { autoCommit: true }
+        const result = await connection.execute(
+            `SELECT Account2.accountID
+             FROM Account2
+             WHERE NOT EXISTS (SELECT *
+                  FROM (SELECT DISTINCT accountID
+                        FROM ((SELECT DISTINCT journal1.accountID, Review1.restaurantName
+                               FROM Review1, Journal1)
+                              MINUS (SELECT Review2.accountID, Review1.restaurantName
+                                     FROM Review1, Review2
+                                     WHERE Review2.JournalID = Review1.JournalID))) TempResult
+                  WHERE TempResult.accountID = Account2.accountID)`
         );
 
         return result.rows;
     }).catch(() => {
         return false;
     });
-    // -- CREATE VIEW TempResult AS
-    // -- SELECT Rates.foodRating, Rates.serviceRating, Rates.affordabilityRating, Review1.restaurantName
-    // -- FROM Rates, Review1
-    // -- WHERE NOT EXISTS ((SELECT restaurantName -- not exists restaurantName that does not match the name asked for
-    //     --                   FROM Rates) --all restaurants
-    // --                             MINUS (SELECT Review1.restaurantName
-    // --                                     FROM Review1
-    // --                                     WHERE Review1.restaurantName = 'test1s name')); --restaurantName that matches the denominator
 }
 
 function sanitizeInput(string) {

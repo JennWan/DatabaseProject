@@ -411,17 +411,8 @@ async function Division(event) {
 
     const tableElement = document.getElementById('displayDivision');
     const tableBody = tableElement.querySelector('tbody');
-
-    const name = document.getElementById('Rname').value;
-
     const response = await fetch('/division', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            RestaurantName: name
-        })
+        method: 'GET'
     });
 
     const response_data = await response.json();

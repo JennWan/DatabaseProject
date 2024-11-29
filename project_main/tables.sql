@@ -192,19 +192,31 @@ VALUES ('0005', '5678901234');
 
 INSERT
 INTO Journal1(journalID, title, accountID)
-VALUES ('1', 'test1', '0001');
+VALUES ('1', 'test1.1', '0001');
 INSERT
 INTO Journal1(journalID, title, accountID)
-VALUES ('2', 'test2', '0001');
+VALUES ('6', 'test1.2', '0001');
 INSERT
 INTO Journal1(journalID, title, accountID)
-VALUES ('3', 'test3', '0001');
+VALUES ('7', 'test1.3', '0001');
 INSERT
 INTO Journal1(journalID, title, accountID)
-VALUES ('4', 'test4', '0002');
+VALUES ('8', 'test1.4', '0001');
 INSERT
 INTO Journal1(journalID, title, accountID)
-VALUES ('5', 'test5', '0003');
+VALUES ('9', 'test1.5', '0001');
+INSERT
+INTO Journal1(journalID, title, accountID)
+VALUES ('2', 'test2', '0002');
+INSERT
+INTO Journal1(journalID, title, accountID)
+VALUES ('3', 'test3', '0003');
+INSERT
+INTO Journal1(journalID, title, accountID)
+VALUES ('4', 'test4', '0004');
+INSERT
+INTO Journal1(journalID, title, accountID)
+VALUES ('5', 'test5', '0005');
 
 ALTER TABLE Journal1 ADD FOREIGN KEY (accountID) REFERENCES Account2(accountID);
 
@@ -245,7 +257,19 @@ ALTER TABLE Friends ADD FOREIGN KEY (friendID) REFERENCES Account2(accountID);
 
 INSERT
 INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
-VALUES ('test1s comment', '123', '1', 'test1s name', 'test1s location');
+VALUES ('test1s comment1', '123', '1', 'test1s name', 'test1s location');
+INSERT
+INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
+VALUES ('test1s comment2', '231', '6', 'test2s name', 'test2s location');
+INSERT
+INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
+VALUES ('test1s comment3', '312', '7', 'test3s name', 'test3s location');
+INSERT
+INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
+VALUES ('test1s comment4', '213', '8', 'test4s name', 'test4s location');
+INSERT
+INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
+VALUES ('test1s comment5', '132', '9', 'test5s name', 'test5s location');
 INSERT
 INTO Review1(comments, reviewID, journalID, restaurantName, restaurantLocation)
 VALUES ('test2s comment', '234', '2', 'test2s name', 'test2s location');
@@ -267,16 +291,28 @@ INTO Review2(tags, journalID, accountID)
 VALUES ('American', '1', '0001');
 INSERT
 INTO Review2(tags, journalID, accountID)
-VALUES ('Seafood', '2', '0004');
+VALUES ('Seafood', '6', '0001');
+INSERT
+INTO Review2(tags, journalID, accountID)
+VALUES ('Italian', '7', '0001');
+INSERT
+INTO Review2(tags, journalID, accountID)
+VALUES ('Japanese', '8', '0001');
+INSERT
+INTO Review2(tags, journalID, accountID)
+VALUES ('American', '9', '0001');
+INSERT
+INTO Review2(tags, journalID, accountID)
+VALUES ('Seafood', '2', '0002');
 INSERT
 INTO Review2(tags, journalID, accountID)
 VALUES ('Italian', '3', '0003');
 INSERT
 INTO Review2(tags, journalID, accountID)
-VALUES ('Japanese', '4', '0001');
+VALUES ('Japanese', '4', '0004');
 INSERT
 INTO Review2(tags, journalID, accountID)
-VALUES ('American', '5', '0002');
+VALUES ('American', '5', '0005');
 
 ALTER TABLE Review2 ADD FOREIGN KEY (journalID) REFERENCES Journal1(journalID);
 ALTER TABLE Review2 ADD FOREIGN KEY (accountID) REFERENCES Account2(accountID);
