@@ -279,7 +279,7 @@ async function updateReview(jid, column, newValue) {
                 {autoCommit: true}
             );
 
-            return result.rows;
+            return result.rowsAffected;
         }).catch((error) => {
             return false;
         });

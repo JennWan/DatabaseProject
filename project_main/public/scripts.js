@@ -123,7 +123,7 @@ async function deleteJournal2Table(event) {
         messageElement.textContent = "Data deleted successfully!";
         displayJournal2Table();
     } else {
-        messageElement.textContent = "Error deleting data! Make sure foreign keys match.";
+        messageElement.textContent = "Error deleting data! Make sure value match.";
     }
 }
 
