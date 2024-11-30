@@ -263,7 +263,6 @@ async function updateReview(jid, column, newValue) {
                 { autoCommit: true }
             );
 
-
             return result.rowsAffected;
         }).catch((error) => {
             console.error('Error updating review2: ', error);
@@ -295,7 +294,7 @@ async function JoinRestaurantStaff(name, location) {
             [name, location],
             { autoCommit: true }
         );
-
+        if (result.rows.length === 0) {return false;}
         return result.rows;
     }).catch(() => {
         return false;

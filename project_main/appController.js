@@ -104,7 +104,6 @@ router.post("/update-review2", async (req, res) => {
     // user can select which tuple they want to update (based on the key).
     const {journalID, column, newValue} = req.body;
 
-
     try {
         const updateResult = await appService.updateReview(journalID, column, newValue);
         if (updateResult) {
@@ -119,8 +118,17 @@ router.post("/update-review2", async (req, res) => {
 
 router.post('/join-restaurant', async (req, res) => {
     const { RName, RLoc } = req.body;
-    const tableContent = await appService.JoinRestaurantStaff(RName, RLoc);
-    res.json({data: tableContent});
+    try {
+        const tableContent = await appService.JoinRestaurantStaff(RName, RLoc);
+
+        if (tableContent) {
+            return res.status(500).json({success: true, data: tableContent});
+        } else {
+            return res.status(500).json({success: false});
+        }
+    } catch (error) {
+        return res.status(500).json({ success: false, error: 'Internal server error' });
+    }
 });
 
 router.get('/division', async (req, res) => {

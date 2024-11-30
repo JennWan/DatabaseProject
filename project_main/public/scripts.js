@@ -390,6 +390,14 @@ async function joinRestaurantStaff1(event) {
     const Data = await response.json();
     const havingTableContent = Data.data;
 
+    const messageElement = document.getElementById('joinsResultMsg');
+
+    if (Data.success) {
+        messageElement.textContent = "Updated successfully!";
+    } else {
+        messageElement.textContent = "Invalid inputs. Please check the values.";
+    }
+
     // Always clear old, already fetched data before new fetching process.
     if (tableBody) {
         tableBody.innerHTML = '';
