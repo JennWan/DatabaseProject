@@ -266,6 +266,7 @@ async function updateReview(jid, column, newValue) {
             return result.rowsAffected;
         }).catch((error) => {
             console.error('Error updating review2: ', error);
+
             return false;
         });
     } else if (column === "AccountID") {
@@ -277,7 +278,6 @@ async function updateReview(jid, column, newValue) {
                 [newValue, jid],
                 {autoCommit: true}
             );
-
             return result.rowsAffected;
         }).catch((error) => {
             return false;
@@ -300,6 +300,7 @@ async function JoinRestaurantStaff(name, location) {
         return false;
     });
 }
+
 
 async function Division() {
     return await withOracleDB(async (connection) => {
