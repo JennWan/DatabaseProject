@@ -371,10 +371,19 @@ INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, re
 VALUES ('90001', '100', '7001', '0001', 'test1s name', 'test1s location');
 INSERT
 INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
+VALUES ('90009', '125', '7001', '0001', 'test1s name', 'test1s location');
+INSERT
+INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
+VALUES ('90008', '234', '7001', '0001', 'test1s name', 'test1s location');
+INSERT
+INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
 VALUES ('90002', '50', '7005', '0002', 'test2s name', 'test2s location');
 INSERT
 INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
 VALUES ('90003', '200', '7003', '0003', 'test3s name', 'test3s location');
+INSERT
+INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
+VALUES ('90010', '156', '7003', '0003', 'test3s name', 'test3s location');
 INSERT
 INTO DineInOrder(orderID, totalPrice, tableNumber, accountID, restaurantName, restaurantLocation)
 VALUES ('90004', '15', '7002', '0004', 'test4s name', 'test4s location');
