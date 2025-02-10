@@ -1,1 +1,1 @@
-# CPSC 304 Course Project
+# Course Project
